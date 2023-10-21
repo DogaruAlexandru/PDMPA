@@ -1,4 +1,4 @@
-package com.example.client.ui.slideshow;
+package com.example.client.ui.containers;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,22 +10,22 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.client.databinding.FragmentSlideshowBinding;
+import com.example.client.databinding.FragmentContainersBinding;
 
-public class SlideshowFragment extends Fragment {
+public class ContainersFragment extends Fragment {
 
-    private FragmentSlideshowBinding binding;
+    private FragmentContainersBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        SlideshowViewModel slideshowViewModel =
-                new ViewModelProvider(this).get(SlideshowViewModel.class);
+        ContainersViewModel containersViewModel =
+                new ViewModelProvider(this).get(ContainersViewModel.class);
 
-        binding = FragmentSlideshowBinding.inflate(inflater, container, false);
+        binding = FragmentContainersBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textSlideshow;
-        slideshowViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        final TextView textView = binding.textContainers;
+        containersViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 
