@@ -32,12 +32,12 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        //todo add expiration dates in calendar
         bindTextToView();
 
         final MaterialCalendarView calendarView = binding.calendar;
-        bindDecorators(calendarView);
-        bindItemsToView(root, calendarView);
+        final CalendarDay today = CalendarDay.today();
+        bindDecorators(calendarView, today);
+        bindProducesToView(root, calendarView, today);
 
         return root;
     }
@@ -47,29 +47,30 @@ public class HomeFragment extends Fragment {
         homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
     }
 
-    private void bindDecorators(MaterialCalendarView calendarView) {
-        addTodayDecorator(calendarView);
+    private void bindDecorators(MaterialCalendarView calendarView, CalendarDay today) {
+        addTodayDecorator(calendarView, today);
         addDatesDecorator(calendarView);
     }
 
     private void addDatesDecorator(MaterialCalendarView calendarView) {
-        homeViewModel.getDatesWithEvents().observe(getViewLifecycleOwner(), dates -> {
-            calendarView.addDecorator(new CalendarDayEventDecorator(dates));
-        });
+        homeViewModel.getProducesDates().observe(getViewLifecycleOwner(), dates ->
+                calendarView.addDecorator(new CalendarDayEventDecorator(dates)));
     }
 
-    private void addTodayDecorator(MaterialCalendarView calendarView) {
-        CalendarDay today = CalendarDay.today();
+    private void addTodayDecorator(MaterialCalendarView calendarView, CalendarDay today) {
         calendarView.setDateSelected(today, true);
         calendarView.addDecorator(new TodayDecorator(today));
     }
 
-    private void bindItemsToView(View root, MaterialCalendarView calendarView) {
+    private void bindProducesToView(View root, MaterialCalendarView calendarView, CalendarDay today) {
         final RecyclerView recyclerView = binding.comingExpirationsRecyclerView;
+
         recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
-        homeViewModel.getItems().observe(getViewLifecycleOwner(), expirationTodayModels -> {
-            recyclerView.setAdapter(new ExpirationsTodayAdaptor(root.getContext(),
-                    expirationTodayModels.get(CalendarDay.today())));
+
+        homeViewModel.getProduces().observe(getViewLifecycleOwner(), expirationTodayModels -> {
+            List<ProducesModel> produces = expirationTodayModels.get(today);
+            ExpirationsTodayAdaptor adaptor = new ExpirationsTodayAdaptor(root.getContext(), produces);
+            recyclerView.setAdapter(adaptor);
             addCalendarDateChangeListener(root, calendarView, recyclerView, expirationTodayModels);
         });
     }

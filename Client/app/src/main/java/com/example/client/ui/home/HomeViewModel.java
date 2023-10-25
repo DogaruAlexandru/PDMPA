@@ -7,89 +7,76 @@ import androidx.lifecycle.ViewModel;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
+import java.util.Set;
 
 public class HomeViewModel extends ViewModel {
+    public final static List<ProducesModel> EMPTY_DAY_LIST = new ArrayList<>(Collections.singletonList(
+            new ProducesModel("Nothing expires today.", "Nice job, keep it up! \uD83D\uDE09")
+    ));
 
-    public final static List<ProducesModel> EMPTY_DAY_LIST = new ArrayList<>();
-    private final static ProducesModel EMPTY_DAY = new ProducesModel(
-            "Nothing expires today.", "Nice job, keep it up! \uD83D\uDE09");
     private final MutableLiveData<String> text;
-    private final MutableLiveData<HashMap<CalendarDay, List<ProducesModel>>> items;
-    private final MutableLiveData<HashSet<CalendarDay>> datesWithEvents;
+    private final MutableLiveData<HashMap<CalendarDay, List<ProducesModel>>> produces;
+    private final MutableLiveData<Set<CalendarDay>> producesDates;
+
+    private HashMap<CalendarDay, List<ProducesModel>> data;
 
     public HomeViewModel() {
-        EMPTY_DAY_LIST.add(EMPTY_DAY);
+        getFromDB();
 
         text = new MutableLiveData<>();
         text.setValue("Expiration dates");
 
-        items = new MutableLiveData<>();
-        items.setValue(getDayExpiringProduces());
+        produces = new MutableLiveData<>();
+        produces.setValue(getDayExpiringProduces());
 
-        datesWithEvents = new MutableLiveData<>();
-        datesWithEvents.setValue(getDates());
+        producesDates = new MutableLiveData<>();
+        producesDates.setValue(getDates());
     }
 
-    private HashSet<CalendarDay> getDates() {
+    private Set<CalendarDay> getDates() {
         //todo get dates from db
-
-        HashSet<CalendarDay> eventDates = new HashSet<>();
-        eventDates.add(CalendarDay.from(2023, 10, 27));
-        eventDates.add(CalendarDay.from(2023, 11, 1));
-
-        return eventDates;
+        return data.keySet();
     }
 
     private HashMap<CalendarDay, List<ProducesModel>> getDayExpiringProduces() {
-
-        return getFromDB();
+        return data;
     }
 
-    private HashMap<CalendarDay, List<ProducesModel>> getFromDB() {
+    private void getFromDB() {
         //todo get from db or saved db on device
 
         HashMap<CalendarDay, List<ProducesModel>> map = new HashMap<>();
 
-        map.put(CalendarDay.from(2023, 10, 27), new ArrayList<>());
-        Objects.requireNonNull(map.get(CalendarDay.from(2023, 10, 27))).
-                add(new ProducesModel("1", "zxc"));
-        Objects.requireNonNull(map.get(CalendarDay.from(2023, 10, 27))).
-                add(new ProducesModel("2", "asd"));
-        Objects.requireNonNull(map.get(CalendarDay.from(2023, 10, 27))).
-                add(new ProducesModel("3", "zxc"));
-        Objects.requireNonNull(map.get(CalendarDay.from(2023, 10, 27))).
-                add(new ProducesModel("4", "asd"));
+        map.put(CalendarDay.from(2023, 10, 27), new ArrayList<>(Arrays.asList(
+                new ProducesModel("1", "zxc"),
+                new ProducesModel("2", "asd"),
+                new ProducesModel("3", "zxc"),
+                new ProducesModel("4", "asd"))));
 
-        map.put(CalendarDay.from(2023, 11, 1), new ArrayList<>());
-        Objects.requireNonNull(map.get(CalendarDay.from(2023, 11, 1))).
-                add(new ProducesModel("5", "zxc"));
-        Objects.requireNonNull(map.get(CalendarDay.from(2023, 11, 1))).
-                add(new ProducesModel("6", "asd"));
-        Objects.requireNonNull(map.get(CalendarDay.from(2023, 11, 1))).
-                add(new ProducesModel("7", "asd"));
-        Objects.requireNonNull(map.get(CalendarDay.from(2023, 11, 1))).
-                add(new ProducesModel("8", "zxc"));
+        map.put(CalendarDay.from(2023, 10, 27), new ArrayList<>(Arrays.asList(
+                new ProducesModel("5", "zxc"),
+                new ProducesModel("6", "asd"),
+                new ProducesModel("7", "zxc"))));
 
-        map.put(CalendarDay.from(2023, 10, 25), new ArrayList<>());
-        Objects.requireNonNull(map.get(CalendarDay.from(2023, 10, 25))).
-                add(new ProducesModel("tas", "eee"));
+        map.put(CalendarDay.from(2023, 11, 1), new ArrayList<>(Collections.singletonList(
+                new ProducesModel("tas", "eee"))));
 
-        return map;
+        data = map;
     }
 
     public LiveData<String> getText() {
         return text;
     }
 
-    public LiveData<HashMap<CalendarDay, List<ProducesModel>>> getItems() {
-        return items;
+    public LiveData<HashMap<CalendarDay, List<ProducesModel>>> getProduces() {
+        return produces;
     }
 
-    public MutableLiveData<HashSet<CalendarDay>> getDatesWithEvents() {
-        return datesWithEvents;
+    public MutableLiveData<Set<CalendarDay>> getProducesDates() {
+        return producesDates;
     }
 }
