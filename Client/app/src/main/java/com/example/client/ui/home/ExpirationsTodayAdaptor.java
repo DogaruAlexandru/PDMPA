@@ -14,9 +14,9 @@ import java.util.List;
 public class ExpirationsTodayAdaptor extends RecyclerView.Adapter<ExpirationsTodayViewHolder> {
 
     Context context;
-    List<ExpirationTodayModel> items;
+    List<ProducesModel> items;
 
-    public ExpirationsTodayAdaptor(Context context, List<ExpirationTodayModel> list) {
+    public ExpirationsTodayAdaptor(Context context, List<ProducesModel> list) {
         this.context = context;
         this.items = list;
     }

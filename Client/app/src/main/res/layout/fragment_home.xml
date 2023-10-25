@@ -17,10 +17,14 @@
         android:textAlignment="center"
         android:textSize="24sp" />
 
-    <CalendarView
+    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
         android:id="@+id/calendar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:mcv_dateTextAppearance="@style/CalendarDateTextAppearance"
+        app:mcv_firstDayOfWeek="monday"
+        app:mcv_selectionMode="single"
+        app:mcv_showOtherDates="all" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/coming_expirations_recycler_view"
