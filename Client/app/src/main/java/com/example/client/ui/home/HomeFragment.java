@@ -68,7 +68,7 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
 
         homeViewModel.getProduces().observe(getViewLifecycleOwner(), expirationTodayModels -> {
-            List<ProducesModel> produces = expirationTodayModels.get(today);
+            List<ProducesModel> produces = expirationTodayModels.getOrDefault(today, EMPTY_DAY_LIST);
             ExpirationsTodayAdaptor adaptor = new ExpirationsTodayAdaptor(root.getContext(), produces);
             recyclerView.setAdapter(adaptor);
             addCalendarDateChangeListener(root, calendarView, recyclerView, expirationTodayModels);
@@ -80,11 +80,8 @@ public class HomeFragment extends Fragment {
             if (!selected) {
                 return;
             }
-            if (!expirationTodayModels.containsKey(date)) {
-                recyclerView.setAdapter(new ExpirationsTodayAdaptor(root.getContext(), EMPTY_DAY_LIST));
-                return;
-            }
-            recyclerView.setAdapter(new ExpirationsTodayAdaptor(root.getContext(), expirationTodayModels.get(date)));
+            List<ProducesModel> produces = expirationTodayModels.getOrDefault(date, EMPTY_DAY_LIST);
+            recyclerView.setAdapter(new ExpirationsTodayAdaptor(root.getContext(), produces));
         });
     }
 
