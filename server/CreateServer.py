@@ -13,16 +13,29 @@ connection = pymysql.connect(
 
 
 # Endpoint to create a new user
-@app.route('/app_users', methods=['POST'])
-def create_user():
+@app.route('/app_users', methods=['POST', 'GET'])
+def login_credentials_usage():
+    try:
+        request.get_json()
+    except Exception:
+        return jsonify({'error': "Wrong input type"})
+
     data = request.get_json()
     username = data.get('username')
     password = data.get('password')
-    with connection.cursor() as cursor:
-        sql = "INSERT INTO app_users (username, password_hash) VALUES (%s, %s)"
-        cursor.execute(sql, (username, password))
-        connection.commit()
-    return jsonify({'message': 'User created successfully'})
+    if request.method == 'POST':
+        with connection.cursor() as cursor:
+            sql = "INSERT INTO app_users (username, password_hash) VALUES (%s, %s)"
+            cursor.execute(sql, (username, password))
+            connection.commit()
+        return jsonify({'message': 'User created successfully'})
+
+    if request.method == 'GET':
+        with connection.cursor() as cursor:
+            sql = "SELECT * FROM app_users WHERE username = %s and password_hash = %s"
+            cursor.execute(sql, (username, password))
+            users = cursor.fetchall()
+            return jsonify(users)
 
 
 if __name__ == '__main__':
