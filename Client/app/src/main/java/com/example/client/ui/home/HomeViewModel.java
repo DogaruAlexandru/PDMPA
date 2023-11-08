@@ -14,15 +14,15 @@ import java.util.List;
 import java.util.Set;
 
 public class HomeViewModel extends ViewModel {
-    public final static List<ProducesModel> EMPTY_DAY_LIST = new ArrayList<>(Collections.singletonList(
-            new ProducesModel("Nothing expires today.", "Nice job, keep it up! \uD83D\uDE09")
+    public final static List<ProductModel> EMPTY_DAY_LIST = new ArrayList<>(Collections.singletonList(
+            new ProductModel("Nothing expires today.", "Nice job, keep it up! \uD83D\uDE09")
     ));
 
     private final MutableLiveData<String> text;
-    private final MutableLiveData<HashMap<CalendarDay, List<ProducesModel>>> produces;
+    private final MutableLiveData<HashMap<CalendarDay, List<ProductModel>>> produces;
     private final MutableLiveData<Set<CalendarDay>> producesDates;
 
-    private HashMap<CalendarDay, List<ProducesModel>> data;
+    private HashMap<CalendarDay, List<ProductModel>> data;
 
     public HomeViewModel() {
         getFromDB();
@@ -42,28 +42,27 @@ public class HomeViewModel extends ViewModel {
         return data.keySet();
     }
 
-    private HashMap<CalendarDay, List<ProducesModel>> getDayExpiringProduces() {
+    private HashMap<CalendarDay, List<ProductModel>> getDayExpiringProduces() {
         return data;
     }
 
     private void getFromDB() {
         //todo get from db or saved db on device
-
-        HashMap<CalendarDay, List<ProducesModel>> map = new HashMap<>();
+        HashMap<CalendarDay, List<ProductModel>> map = new HashMap<>();
 
         map.put(CalendarDay.from(2023, 10, 27), new ArrayList<>(Arrays.asList(
-                new ProducesModel("1", "zxc"),
-                new ProducesModel("2", "asd"),
-                new ProducesModel("3", "zxc"),
-                new ProducesModel("4", "asd"))));
+                new ProductModel("1", "zxc"),
+                new ProductModel("2", "asd"),
+                new ProductModel("3", "zxc"),
+                new ProductModel("4", "asd"))));
 
         map.put(CalendarDay.from(2023, 11, 1), new ArrayList<>(Arrays.asList(
-                new ProducesModel("5", "zxc"),
-                new ProducesModel("6", "asd"),
-                new ProducesModel("7", "zxc"))));
+                new ProductModel("5", "zxc"),
+                new ProductModel("6", "asd"),
+                new ProductModel("7", "zxc"))));
 
         map.put(CalendarDay.from(2023, 10, 25), new ArrayList<>(Collections.singletonList(
-                new ProducesModel("tas", "eee"))));
+                new ProductModel("tas", "eee"))));
 
         data = map;
     }
@@ -72,7 +71,7 @@ public class HomeViewModel extends ViewModel {
         return text;
     }
 
-    public LiveData<HashMap<CalendarDay, List<ProducesModel>>> getProduces() {
+    public LiveData<HashMap<CalendarDay, List<ProductModel>>> getProduces() {
         return produces;
     }
 

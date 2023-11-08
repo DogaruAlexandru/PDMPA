@@ -1,9 +1,9 @@
 package com.example.client.ui.home;
 
-public class ProducesModel {
+public class ProductModel {
     private final String produceName, containerName;
 
-    public ProducesModel(String name, String container) {
+    public ProductModel(String name, String container) {
         this.produceName = name;
         this.containerName = container;
     }

@@ -68,19 +68,19 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
 
         homeViewModel.getProduces().observe(getViewLifecycleOwner(), expirationTodayModels -> {
-            List<ProducesModel> produces = expirationTodayModels.getOrDefault(today, EMPTY_DAY_LIST);
+            List<ProductModel> produces = expirationTodayModels.getOrDefault(today, EMPTY_DAY_LIST);
             ExpirationsTodayAdaptor adaptor = new ExpirationsTodayAdaptor(root.getContext(), produces);
             recyclerView.setAdapter(adaptor);
             addCalendarDateChangeListener(root, calendarView, recyclerView, expirationTodayModels);
         });
     }
 
-    private static void addCalendarDateChangeListener(View root, MaterialCalendarView calendarView, RecyclerView recyclerView, HashMap<CalendarDay, List<ProducesModel>> expirationTodayModels) {
+    private static void addCalendarDateChangeListener(View root, MaterialCalendarView calendarView, RecyclerView recyclerView, HashMap<CalendarDay, List<ProductModel>> expirationTodayModels) {
         calendarView.setOnDateChangedListener((widget, date, selected) -> {
             if (!selected) {
                 return;
             }
-            List<ProducesModel> produces = expirationTodayModels.getOrDefault(date, EMPTY_DAY_LIST);
+            List<ProductModel> produces = expirationTodayModels.getOrDefault(date, EMPTY_DAY_LIST);
             recyclerView.setAdapter(new ExpirationsTodayAdaptor(root.getContext(), produces));
         });
     }

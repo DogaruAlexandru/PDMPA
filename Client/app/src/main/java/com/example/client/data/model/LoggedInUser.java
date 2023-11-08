@@ -5,19 +5,19 @@ package com.example.client.data.model;
  */
 public class LoggedInUser {
 
-    private String userId;
-    private String displayName;
+    private final String userId;
+    private final String email;
 
-    public LoggedInUser(String userId, String displayName) {
+    public LoggedInUser(String userId, String email) {
         this.userId = userId;
-        this.displayName = displayName;
+        this.email = email;
     }
 
     public String getUserId() {
         return userId;
     }
 
-    public String getDisplayName() {
-        return displayName;
+    public String getEmail() {
+        return email;
     }
 }
