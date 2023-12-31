@@ -19,6 +19,7 @@
             android:exported="true"
             android:label="@string/title_activity_login"
             android:theme="@style/Theme.Client.NoActionBar">
+            <!--todo-->
 <!--            <intent-filter>-->
 <!--                <action android:name="android.intent.action.MAIN" />-->
 
