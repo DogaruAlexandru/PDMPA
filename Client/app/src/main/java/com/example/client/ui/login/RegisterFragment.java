@@ -92,7 +92,7 @@ public class RegisterFragment extends Fragment {
         usernameEditText.addTextChangedListener(afterTextChangedListener);
         passwordEditText.addTextChangedListener(afterTextChangedListener);
         passwordEditText.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_DONE) {//todo why here?
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
                 loginViewModel.register(usernameEditText.getText().toString(), passwordEditText.getText().toString());
             }
             return false;

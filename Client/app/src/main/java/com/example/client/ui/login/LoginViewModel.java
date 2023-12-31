@@ -36,13 +36,13 @@ public class LoginViewModel extends ViewModel {
     public void login(String username, String password) {
         // can be launched in a separate asynchronous job
         Result<LoggedInUser> result = loginRepository.login(username, password);
-        resultValidation(result);//todo should it be here?
+        resultValidation(result);
     }
 
     public void register(String username, String password) {
         // can be launched in a separate asynchronous job
         Result<LoggedInUser> result = loginRepository.register(username, password);
-        resultValidation(result);//todo should it be here?
+        resultValidation(result);
     }
 
     private void resultValidation(Result<LoggedInUser> result) {
