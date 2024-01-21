@@ -4,20 +4,57 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="12dp"
     tools:context=".ui.produces.ProducesFragment">
 
     <TextView
-        android:id="@+id/text_produces"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:id="@+id/textViewFieldSelector"
+        android:layout_width="0dp"
+        android:layout_height="28dp"
+        android:gravity="center"
+        android:text="@string/sort_by"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/spinnerFieldSelector"
+        app:layout_constraintWidth_percent="0.2" />
+
+    <Spinner
+        android:id="@+id/spinnerFieldSelector"
+        android:layout_width="0dp"
+        android:layout_height="28dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.8" />
+
+    <TextView
+        android:id="@+id/textViewOrderSelector"
+        android:layout_width="0dp"
+        android:layout_height="28dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
+        android:gravity="center"
+        android:text="@string/order_by"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFieldSelector"
+        app:layout_constraintWidth_percent="0.2" />
+
+    <Spinner
+        android:id="@+id/spinnerOrderSelector"
+        android:layout_width="0dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerFieldSelector"
+        app:layout_constraintWidth_percent="0.8" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/produces_rv"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:layout_constraintTop_toBottomOf="@+id/spinnerOrderSelector" />
 </androidx.constraintlayout.widget.ConstraintLayout>
