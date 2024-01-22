@@ -15,9 +15,13 @@ import java.util.List;
 public class ProducesViewModel extends ViewModel {
 
     private List<Product> data;
-    private final MutableLiveData<List<Product>> produces;
+    private MutableLiveData<List<Product>> produces;
 
     public ProducesViewModel() {
+        setData();
+    }
+
+    public void setData() {
         getFromDB();
 
         produces = new MutableLiveData<>();

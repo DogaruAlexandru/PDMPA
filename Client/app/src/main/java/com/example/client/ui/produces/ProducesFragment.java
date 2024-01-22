@@ -1,5 +1,6 @@
 package com.example.client.ui.produces;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.client.data.model.Product;
 import com.example.client.databinding.FragmentProducesBinding;
+import com.example.client.ui.produce.ProduceActivity;
 
 import java.util.Comparator;
 import java.util.List;
@@ -115,6 +117,14 @@ public class ProducesFragment extends Fragment implements RecyclerViewInterface 
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        producesViewModel.setData();
+        setAdaptorData(binding.getRoot(), binding.producesRv);
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
@@ -122,7 +132,10 @@ public class ProducesFragment extends Fragment implements RecyclerViewInterface 
 
     @Override
     public void onItemClick(int pos) {
-        Toast.makeText(requireContext(), "Clicked on: " + productList.get(pos).name(), Toast.LENGTH_SHORT).show();
-
+        Product clickedProduct = productList.get(pos);
+        Intent intent = new Intent(requireContext(), ProduceActivity.class);
+        intent.putExtra("productId", clickedProduct.id());
+        intent.putExtra("type", "edit");
+        startActivity(intent);
     }
 }
