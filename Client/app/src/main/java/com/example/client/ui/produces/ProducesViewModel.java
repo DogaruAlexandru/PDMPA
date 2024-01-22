@@ -28,16 +28,16 @@ public class ProducesViewModel extends ViewModel {
         //todo get from db or saved db on device
 
         data = new ArrayList<>(Arrays.asList(
-                new Product("apple", createDate(2024, 1, 1), 1000, "cellar"),
-                new Product("pear", createDate(2024, 1, 1), 1000, "cellar"),
-                new Product("milk", createDate(2024, 1, 3), 1000, "fridge"),
-                new Product("yeast", createDate(2024, 1, 1), 23423, "pantry"),
-                new Product("mere", createDate(2024, 1, 1), 1000, "fridge"),
-                new Product("dsa", createDate(2024, 1, 5), 123, "fridge"),
-                new Product("mere", createDate(2024, 1, 3), 1000, "cellar"),
-                new Product("sada", createDate(2024, 1, 2), 1000, "fridge"),
-                new Product("das", createDate(2024, 1, 5), 2342, "pantry"),
-                new Product("asd", createDate(2024, 1, 1), 1000, "cellar")
+                new Product(1,"apple", createDate(2024, 1, 1), 1000, "cellar"),
+                new Product(2,"pear", createDate(2024, 1, 1), 1000, "cellar"),
+                new Product(3,"milk", createDate(2024, 1, 3), 1000, "fridge"),
+                new Product(4,"yeast", createDate(2024, 1, 1), 23423, "pantry"),
+                new Product(5,"mere", createDate(2024, 1, 1), 1000, "fridge"),
+                new Product(6,"dsa", createDate(2024, 1, 5), 123, "fridge"),
+                new Product(7,"mere", createDate(2024, 1, 3), 1000, "cellar"),
+                new Product(8,"sada", createDate(2024, 1, 2), 1000, "fridge"),
+                new Product(9,"das", createDate(2024, 1, 5), 2342, "pantry"),
+                new Product(10,"asd", createDate(2024, 1, 1), 1000, "cellar")
         ));
     }
 

@@ -26,6 +26,8 @@ public class ProducesFragment extends Fragment implements RecyclerViewInterface 
     private FragmentProducesBinding binding;
     private ProducesViewModel producesViewModel;
 
+    private List<Product> productList;
+
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         producesViewModel = new ViewModelProvider(this).get(ProducesViewModel.class);
 
@@ -43,11 +45,11 @@ public class ProducesFragment extends Fragment implements RecyclerViewInterface 
         return root;
     }
 
-    private void spinnerValueChangeListener(Spinner binding) {
-        binding.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+    private void spinnerValueChangeListener(Spinner spinner) {
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                updateSorting();
+                setAdaptorData(binding.getRoot(), binding.producesRv);
             }
 
             @Override
@@ -77,9 +79,14 @@ public class ProducesFragment extends Fragment implements RecyclerViewInterface 
 
         recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
 
+        setAdaptorData(root, recyclerView);
+    }
+
+    private void setAdaptorData(View root, RecyclerView recyclerView) {
         producesViewModel.getProduces().observe(getViewLifecycleOwner(), produces -> {
             sortProducts(produces);
-            ProductsAdapter adaptor = new ProductsAdapter(root.getContext(), produces);
+            productList = produces;
+            ProductsAdapter adaptor = new ProductsAdapter(root.getContext(), produces, this);
             recyclerView.setAdapter(adaptor);
         });
     }
@@ -99,19 +106,12 @@ public class ProducesFragment extends Fragment implements RecyclerViewInterface 
 
     private Comparator<Product> getComparatorForField(String field) {
         return switch (field) {
-            case "Name" -> Comparator.comparing(Product::getName);
-            case "Container" -> Comparator.comparing(Product::getContainer);
-            case "Expiration Date" -> Comparator.comparing(Product::getExpirationDate);
-            case "Quantity" -> Comparator.comparing(Product::getQuantity);
+            case "Name" -> Comparator.comparing(Product::name);
+            case "Container" -> Comparator.comparing(Product::container);
+            case "Expiration Date" -> Comparator.comparing(Product::expirationDate);
+            case "Quantity" -> Comparator.comparing(Product::quantity);
             default -> throw new IllegalArgumentException("Invalid field: " + field);
         };
-    }
-
-    private void updateSorting() {
-        List<Product> produces = producesViewModel.getProduces().getValue();
-        sortProducts(produces);
-        ProductsAdapter adaptor = new ProductsAdapter(requireContext(), produces);
-        binding.producesRv.setAdapter(adaptor);
     }
 
     @Override
@@ -121,8 +121,8 @@ public class ProducesFragment extends Fragment implements RecyclerViewInterface 
     }
 
     @Override
-    public void onItemClick(Product product) {
-        Toast.makeText(requireContext(), "Clicked on: " + product.getName(), Toast.LENGTH_SHORT).show();
+    public void onItemClick(int pos) {
+        Toast.makeText(requireContext(), "Clicked on: " + productList.get(pos).name(), Toast.LENGTH_SHORT).show();
 
     }
 }
