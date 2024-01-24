@@ -36,6 +36,7 @@ android {
 
 dependencies {
 
+    implementation("com.google.code.gson:gson:2.10.1")
     implementation("com.google.android.material:material:1.4.0")
     implementation("com.github.prolificinteractive:material-calendarview:2.0.1")
     implementation("androidx.appcompat:appcompat:1.6.1")

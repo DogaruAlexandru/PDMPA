@@ -3,13 +3,11 @@ package com.example.client.ui.produce;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.client.data.model.Product;
 import com.example.client.data.model.ProductFull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 public class ProduceEditViewModel extends ViewModel {
     private long productId;
@@ -75,7 +73,7 @@ public class ProduceEditViewModel extends ViewModel {
         return containerNamesMutableLiveData;
     }
 
-    public void updateProduct() {
+    public void updateProduct(ProductFull editedValues) {
         //todo look the difference between old and new product full and see differences and send them to be modified
     }
 
