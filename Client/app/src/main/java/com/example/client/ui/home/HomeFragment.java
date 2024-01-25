@@ -32,14 +32,18 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        setData(root);
+
+        return root;
+    }
+
+    private void setData(View root) {
         bindTextToView();
 
         final MaterialCalendarView calendarView = binding.calendar;
         final CalendarDay today = CalendarDay.today();
         bindDecorators(calendarView, today);
         bindProducesToView(root, calendarView, today);
-
-        return root;
     }
 
     private void bindTextToView() {
@@ -89,5 +93,13 @@ public class HomeFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        homeViewModel.setData();
+        setData(binding.getRoot());
     }
 }

@@ -19,16 +19,20 @@ public class HomeViewModel extends ViewModel {
     ));
 
     private final MutableLiveData<String> text;
-    private final MutableLiveData<HashMap<CalendarDay, List<ProducesModel>>> produces;
-    private final MutableLiveData<Set<CalendarDay>> producesDates;
+    private MutableLiveData<HashMap<CalendarDay, List<ProducesModel>>> produces;
+    private MutableLiveData<Set<CalendarDay>> producesDates;
 
     private HashMap<CalendarDay, List<ProducesModel>> data;
 
     public HomeViewModel() {
-        getFromDB();
+        setData();
 
         text = new MutableLiveData<>();
         text.setValue("Expiration dates");
+    }
+
+    public void setData(){
+        getFromDB();
 
         produces = new MutableLiveData<>();
         produces.setValue(getDayExpiringProduces());

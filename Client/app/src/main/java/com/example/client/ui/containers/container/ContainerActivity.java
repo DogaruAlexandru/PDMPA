@@ -28,7 +28,6 @@ public class ContainerActivity extends AppCompatActivity {
                 args.putLong("containerId", containerId);
                 fragment.setArguments(args);
                 setTitle("Edit Container");
-
             }
             case "add" -> {
                 fragment = ContainerAddFragment.newInstance();
