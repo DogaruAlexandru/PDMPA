@@ -26,7 +26,7 @@ public class ContainersFragment extends Fragment {
 
         final TextView textView = binding.textContainers;
         containersViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-        return root;
+        return root;//todo
     }
 
     @Override

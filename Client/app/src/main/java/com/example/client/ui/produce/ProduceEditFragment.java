@@ -3,7 +3,6 @@ package com.example.client.ui.produce;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.DatePickerDialog;
-import android.icu.text.DateFormat;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,15 +12,11 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.Spinner;
 
 import com.example.client.R;
 import com.example.client.data.model.ProductFull;
-import com.example.client.ui.produces.ProductsAdapter;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.ParseException;
@@ -120,7 +115,7 @@ public class ProduceEditFragment extends Fragment {
 
         mViewModel.getContainerNamesMutableLiveData().observe(getViewLifecycleOwner(), containers -> {
             containers.add(0, "Chose storage");
-            CustomAdapter adapter = new CustomAdapter(requireContext(),
+            ProduceAdapter adapter = new ProduceAdapter(requireContext(),
                     android.R.layout.simple_spinner_item, containers, 0);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinnerProductContainer.setAdapter(adapter);
