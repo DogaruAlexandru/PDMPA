@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.client.data.RecyclerViewInterface;
 import com.example.client.data.model.Container;
 import com.example.client.databinding.FragmentContainersBinding;
+import com.example.client.ui.containers.container.ContainerActivity;
 
 import java.util.List;
 
@@ -68,10 +69,10 @@ public class ContainersFragment extends Fragment implements RecyclerViewInterfac
 
     @Override
     public void onItemClick(int pos) {
-//        Container clickedContainer = containerList.get(pos);
-//        Intent intent = new Intent(requireContext(), ContainerActivity.class);
-//        intent.putExtra("containerId", clickedContainer.id());
-//        intent.putExtra("type", "edit");
-//        startActivity(intent);
+        Container clickedContainer = containerList.get(pos);
+        Intent intent = new Intent(requireContext(), ContainerActivity.class);
+        intent.putExtra("containerId", clickedContainer.id());
+        intent.putExtra("type", "edit");
+        startActivity(intent);
     }
 }

@@ -70,7 +70,7 @@ public class ProduceEditFragment extends Fragment {
         setDatePickerAction(rootView);
 
         btnEdit.setOnClickListener(view -> {
-            mViewModel.updateProduct(getEditedValues(rootView));
+            mViewModel.updateProduct(getValues(rootView));
             requireActivity().getOnBackPressedDispatcher().onBackPressed();
         });
 
@@ -142,7 +142,7 @@ public class ProduceEditFragment extends Fragment {
         });
     }
 
-    private ProductFull getEditedValues(View rootView) {
+    private ProductFull getValues(View rootView) {
         return new ProductFull(
                 productId,
                 getFieldString(rootView, R.id.tilProductName),
