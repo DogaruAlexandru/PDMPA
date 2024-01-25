@@ -12,6 +12,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.client.R;
+import com.example.client.data.model.Container;
+import com.google.android.material.textfield.TextInputLayout;
+
+import java.util.Objects;
 
 public class ContainerAddFragment extends Fragment {
 
@@ -33,17 +37,31 @@ public class ContainerAddFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_container_add, container, false);
 
-        Button btnEdit = rootView.findViewById(R.id.btnAdd);
+        setButtonsAction(rootView);
+
+        return rootView;
+    }
+
+    private void setButtonsAction(View rootView) {
+        Button btnAdd = rootView.findViewById(R.id.btnAdd);
         Button btnBack = rootView.findViewById(R.id.btnBack);
 
-        btnEdit.setOnClickListener(view -> {
+        btnAdd.setOnClickListener(view -> {
+            mViewModel.addContainer(getValues(rootView));
+            requireActivity().getOnBackPressedDispatcher().onBackPressed();
         });
 
         btnBack.setOnClickListener(view -> {
             requireActivity().getOnBackPressedDispatcher().onBackPressed();
         });
-
-        return rootView;
     }
 
+    private Container getValues(View rootView) {
+        return new Container(null, getFieldString(rootView, R.id.tilContainerName));
+    }
+
+    private String getFieldString(View rootView, int id) {
+        return Objects.requireNonNull(((TextInputLayout) rootView.findViewById(id)).getEditText())
+                .getText().toString();
+    }
 }
