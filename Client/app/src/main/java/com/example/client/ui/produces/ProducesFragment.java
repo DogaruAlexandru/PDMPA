@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -16,9 +15,10 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.client.data.RecyclerViewInterface;
 import com.example.client.data.model.Product;
 import com.example.client.databinding.FragmentProducesBinding;
-import com.example.client.ui.produce.ProduceActivity;
+import com.example.client.ui.produces.produce.ProduceActivity;
 
 import java.util.Comparator;
 import java.util.List;

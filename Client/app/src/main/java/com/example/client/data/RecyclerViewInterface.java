@@ -1,4 +1,4 @@
-package com.example.client.ui.produces;
+package com.example.client.data;
 
 import com.example.client.data.model.Product;
 

@@ -1,4 +1,4 @@
-package com.example.client.ui.produce;
+package com.example.client.ui.produces.produce;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;

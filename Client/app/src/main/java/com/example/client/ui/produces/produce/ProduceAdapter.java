@@ -1,4 +1,4 @@
-package com.example.client.ui.produce;
+package com.example.client.ui.produces.produce;
 
 import android.content.Context;
 import android.view.View;
