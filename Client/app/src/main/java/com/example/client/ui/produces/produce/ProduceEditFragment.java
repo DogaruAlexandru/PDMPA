@@ -104,7 +104,6 @@ public class ProduceEditFragment extends Fragment {
                     year, month, day);
             datePickerDialog.show();
         });
-
     }
 
     public void setProductContainerValues(View rootView) {
