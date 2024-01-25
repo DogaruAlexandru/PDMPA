@@ -29,7 +29,6 @@ public class ContainerAddFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(ContainerAddViewModel.class);
-        // TODO: Use the ViewModel
     }
 
     @Override
