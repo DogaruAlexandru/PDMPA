@@ -8,15 +8,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.client.R;
+import com.example.client.data.model.Product;
 
 import java.util.List;
 
 public class ExpirationsTodayAdaptor extends RecyclerView.Adapter<ExpirationsTodayViewHolder> {
 
     Context context;
-    List<ProducesModel> items;
+    List<Product> items;
 
-    public ExpirationsTodayAdaptor(Context context, List<ProducesModel> list) {
+    public ExpirationsTodayAdaptor(Context context, List<Product> list) {
         this.context = context;
         this.items = list;
     }
@@ -30,8 +31,8 @@ public class ExpirationsTodayAdaptor extends RecyclerView.Adapter<ExpirationsTod
 
     @Override
     public void onBindViewHolder(@NonNull ExpirationsTodayViewHolder holder, int position) {
-        holder.getProduceName().setText(items.get(position).getProduceName());
-        holder.getContainerName().setText(items.get(position).getContainerName());
+        holder.getProduceName().setText(items.get(position).name());
+        holder.getContainerName().setText(items.get(position).container());
     }
 
     @Override

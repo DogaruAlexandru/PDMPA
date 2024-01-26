@@ -14,12 +14,13 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.client.data.model.Product;
 import com.example.client.databinding.FragmentHomeBinding;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class HomeFragment extends Fragment {
 
@@ -72,19 +73,19 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
 
         homeViewModel.getProduces().observe(getViewLifecycleOwner(), expirationTodayModels -> {
-            List<ProducesModel> produces = expirationTodayModels.getOrDefault(today, EMPTY_DAY_LIST);
+            List<Product> produces = expirationTodayModels.getOrDefault(today, EMPTY_DAY_LIST);
             ExpirationsTodayAdaptor adaptor = new ExpirationsTodayAdaptor(root.getContext(), produces);
             recyclerView.setAdapter(adaptor);
             addCalendarDateChangeListener(root, calendarView, recyclerView, expirationTodayModels);
         });
     }
 
-    private static void addCalendarDateChangeListener(View root, MaterialCalendarView calendarView, RecyclerView recyclerView, HashMap<CalendarDay, List<ProducesModel>> expirationTodayModels) {
+    private static void addCalendarDateChangeListener(View root, MaterialCalendarView calendarView, RecyclerView recyclerView, Map<CalendarDay, List<Product>> expirationTodayModels) {
         calendarView.setOnDateChangedListener((widget, date, selected) -> {
             if (!selected) {
                 return;
             }
-            List<ProducesModel> produces = expirationTodayModels.getOrDefault(date, EMPTY_DAY_LIST);
+            List<Product> produces = expirationTodayModels.getOrDefault(date, EMPTY_DAY_LIST);
             recyclerView.setAdapter(new ExpirationsTodayAdaptor(root.getContext(), produces));
         });
     }
