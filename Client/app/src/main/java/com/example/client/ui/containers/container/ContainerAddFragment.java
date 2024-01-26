@@ -46,13 +46,28 @@ public class ContainerAddFragment extends Fragment {
         Button btnBack = rootView.findViewById(R.id.btnBack);
 
         btnAdd.setOnClickListener(view -> {
-            mViewModel.addContainer(getValues(rootView));
-            requireActivity().getOnBackPressedDispatcher().onBackPressed();
+            if (validateContainerName(rootView)) {
+                mViewModel.addContainer(getValues(rootView));
+                requireActivity().getOnBackPressedDispatcher().onBackPressed();
+            }
         });
 
         btnBack.setOnClickListener(view -> {
             requireActivity().getOnBackPressedDispatcher().onBackPressed();
         });
+    }
+
+    private boolean validateContainerName(View rootView) {
+        TextInputLayout tilContainerName = rootView.findViewById(R.id.tilContainerName);
+        String containerName = getFieldString(rootView, R.id.tilContainerName);
+
+        if (containerName.isEmpty()) {
+            tilContainerName.setError("Container name cannot be empty");
+            return false;
+        } else {
+            tilContainerName.setError(null);
+            return true;
+        }
     }
 
     private Container getValues(View rootView) {

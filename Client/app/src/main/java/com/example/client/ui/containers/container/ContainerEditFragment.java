@@ -17,7 +17,6 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Objects;
 
-
 public class ContainerEditFragment extends Fragment {
     private long containerId;
 
@@ -56,8 +55,10 @@ public class ContainerEditFragment extends Fragment {
         Button btnRemove = rootView.findViewById(R.id.btnRemove);
 
         btnEdit.setOnClickListener(view -> {
-            mViewModel.updateContainer(getValues(rootView));
-            requireActivity().getOnBackPressedDispatcher().onBackPressed();
+            if (validateContainerName(rootView)) {
+                mViewModel.updateContainer(getValues(rootView));
+                requireActivity().getOnBackPressedDispatcher().onBackPressed();
+            }
         });
 
         btnBack.setOnClickListener(view -> {
@@ -68,6 +69,19 @@ public class ContainerEditFragment extends Fragment {
             mViewModel.deleteContainer();
             requireActivity().getOnBackPressedDispatcher().onBackPressed();
         });
+    }
+
+    private boolean validateContainerName(View rootView) {
+        TextInputLayout tilContainerName = rootView.findViewById(R.id.tilContainerName);
+        String containerName = getFieldString(rootView, R.id.tilContainerName);
+
+        if (containerName.isEmpty()) {
+            tilContainerName.setError("Container name cannot be empty");
+            return false;
+        } else {
+            tilContainerName.setError(null);
+            return true;
+        }
     }
 
     private void setFieldsValue(View rootView) {
