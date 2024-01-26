@@ -19,4 +19,25 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="sort_by">Sort by:</string>
+    <string name="order">Order:</string>
+    <string name="product_name">Product Name</string>
+    <string name="product_container">Product Container</string>
+    <string name="expiration_date">Expiration Date</string>
+    <string name="added_date">Added Date</string>
+    <string name="quantity">Quantity</string>
+    <string name="energy_value">Energy Value</string>
+    <string name="fat_value">Fat Value</string>
+    <string name="carbohydrate_value">Carbohydrate Value</string>
+    <string name="sodium">Sodium</string>
+    <string name="calcium">Calcium</string>
+    <string name="protein">Protein</string>
+    <string name="vitamin">Vitamin</string>
+    <string name="vitamin_type">Vitamin Type</string>
+    <string name="allergens">Allergens</string>
+    <string name="add">Add</string>
+    <string name="back">Back</string>
+    <string name="edit">Edit</string>
+    <string name="remove">Remove</string>
+    <string name="container_name">Container Name</string>
 </resources>

@@ -19,16 +19,20 @@ public class HomeViewModel extends ViewModel {
     ));
 
     private final MutableLiveData<String> text;
-    private final MutableLiveData<HashMap<CalendarDay, List<ProducesModel>>> produces;
-    private final MutableLiveData<Set<CalendarDay>> producesDates;
+    private MutableLiveData<HashMap<CalendarDay, List<ProducesModel>>> produces;
+    private MutableLiveData<Set<CalendarDay>> producesDates;
 
     private HashMap<CalendarDay, List<ProducesModel>> data;
 
     public HomeViewModel() {
-        getFromDB();
+        setData();
 
         text = new MutableLiveData<>();
         text.setValue("Expiration dates");
+    }
+
+    public void setData(){
+        getFromDB();
 
         produces = new MutableLiveData<>();
         produces.setValue(getDayExpiringProduces());
@@ -51,18 +55,18 @@ public class HomeViewModel extends ViewModel {
 
         HashMap<CalendarDay, List<ProducesModel>> map = new HashMap<>();
 
-        map.put(CalendarDay.from(2023, 10, 27), new ArrayList<>(Arrays.asList(
+        map.put(CalendarDay.from(2024, 1, 27), new ArrayList<>(Arrays.asList(
                 new ProducesModel("1", "zxc"),
                 new ProducesModel("2", "asd"),
                 new ProducesModel("3", "zxc"),
                 new ProducesModel("4", "asd"))));
 
-        map.put(CalendarDay.from(2023, 11, 1), new ArrayList<>(Arrays.asList(
+        map.put(CalendarDay.from(2024, 1, 1), new ArrayList<>(Arrays.asList(
                 new ProducesModel("5", "zxc"),
                 new ProducesModel("6", "asd"),
                 new ProducesModel("7", "zxc"))));
 
-        map.put(CalendarDay.from(2023, 10, 25), new ArrayList<>(Collections.singletonList(
+        map.put(CalendarDay.from(2024, 1, 25), new ArrayList<>(Collections.singletonList(
                 new ProducesModel("tas", "eee"))));
 
         data = map;
