@@ -49,6 +49,8 @@ public class ProduceAddFragment extends Fragment {
         setButtonsAction(rootView);
         setProductContainerValues(rootView);
 
+        setFieldDate(rootView, R.id.tilAddedDate,  new Date());
+
         return rootView;
     }
 
@@ -147,6 +149,14 @@ public class ProduceAddFragment extends Fragment {
             e.printStackTrace();
             return null;
         }
+    }
+
+    private void setFieldDate(View rootView, int id, Date value) {
+        if (value == null) {
+            return;
+        }
+        Objects.requireNonNull(((TextInputLayout) rootView.findViewById(id)).getEditText())
+                .setText(dateFormat.format(value));
     }
 
     private String getStringFromSpinner(View rootView, int id) {
