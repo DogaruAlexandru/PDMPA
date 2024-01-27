@@ -17,7 +17,7 @@ public class MyApplication extends Application {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent,
                 PendingIntent.FLAG_IMMUTABLE);
 
-        long intervalMillis = 60 * 1000; // todo
+        long intervalMillis = 5 * 60 * 1000; // todo
 
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), intervalMillis, pendingIntent);
     }
