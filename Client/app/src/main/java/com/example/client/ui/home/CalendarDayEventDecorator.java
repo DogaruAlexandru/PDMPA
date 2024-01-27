@@ -7,10 +7,11 @@ import com.prolificinteractive.materialcalendarview.spans.DotSpan;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 public class CalendarDayEventDecorator implements DayViewDecorator {
 
-    private final HashSet<CalendarDay> dates;
+    private final Set<CalendarDay> dates;
 
     public CalendarDayEventDecorator(Collection<CalendarDay> dates) {
         this.dates = new HashSet<>(dates);

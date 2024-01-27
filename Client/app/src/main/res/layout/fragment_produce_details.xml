@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Product Name -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilProductName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/product_name">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:maxLength="255"
+                android:textSize="16sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Quantity -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilQuantity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/quantity">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:importantForAutofill="no"
+                android:inputType="numberDecimal"
+                android:maxLength="10"
+                android:textSize="16sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Expiration Date -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilExpirationDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/expiration_date">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:importantForAutofill="no"
+                android:inputType="date"
+                android:textSize="16sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Added Date -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilAddedDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/added_date">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:importantForAutofill="no"
+                android:inputType="date"
+                android:textSize="16sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Spinner
+            android:id="@+id/spinnerProductContainer"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:prompt="@string/product_container" />
+
+        <!-- Energy Value -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilEnergyValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:hint="@string/energy_value">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:importantForAutofill="no"
+                android:inputType="numberDecimal"
+                android:maxLength="10"
+                android:textSize="16sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Fat Value -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilFatValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/fat_value">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:importantForAutofill="no"
+                android:inputType="numberDecimal"
+                android:maxLength="10"
+                android:textSize="16sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Carbohydrate Value -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilCarbohydrateValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/carbohydrate_value">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:importantForAutofill="no"
+                android:inputType="numberDecimal"
+                android:maxLength="10"
+                android:textSize="16sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Sodium -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilSodium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/sodium">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:importantForAutofill="no"
+                android:inputType="numberDecimal"
+                android:maxLength="10"
+                android:textSize="16sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Calcium -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilCalcium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/calcium">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:importantForAutofill="no"
+                android:inputType="numberDecimal"
+                android:maxLength="10"
+                android:textSize="16sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Protein -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilProtein"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/protein">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:importantForAutofill="no"
+                android:inputType="numberDecimal"
+                android:maxLength="10"
+                android:textSize="16sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Vitamin -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilVitamin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/vitamin">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:importantForAutofill="no"
+                android:inputType="numberDecimal"
+                android:maxLength="10"
+                android:textSize="16sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Vitamin Type -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilVitaminType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/vitamin_type">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:maxLength="255"
+                android:textSize="16sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Allergens -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilAllergens"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/allergens">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:maxLength="255"
+                android:textSize="16sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+</ScrollView>
