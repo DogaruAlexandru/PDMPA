@@ -62,7 +62,7 @@
         android:layout_width="@dimen/login_btn_width"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
-        android:enabled="true"
+        android:enabled="false"
         android:text="@string/register"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

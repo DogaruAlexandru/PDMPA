@@ -49,7 +49,7 @@ public class LoginViewModel extends ViewModel {
         if (result instanceof Result.Success) {
             LoggedInUser data = ((Result.Success<LoggedInUser>) result).getData();
             saveLoggedInUser(data);
-            loginResult.setValue(new LoginResult(new LoggedInUserView(data.getEmail())));
+            loginResult.setValue(new LoginResult(new LoggedInUserView(data.email())));
         } else {
             loginResult.setValue(new LoginResult(R.string.login_failed));
         }
@@ -71,9 +71,6 @@ public class LoginViewModel extends ViewModel {
             return false;
         }
         return username.contains("@") && Patterns.EMAIL_ADDRESS.matcher(username).matches();
-//        } else {
-//            return !username.trim().isEmpty();
-//        }
     }
 
     // A placeholder password validation check
@@ -81,11 +78,11 @@ public class LoginViewModel extends ViewModel {
         return password != null && password.trim().length() > 5;
     }
 
-    private void saveLoggedInUser(LoggedInUser user){
-        SharedPreferences sharedPreferences = appContext.getSharedPreferences("user",Context.MODE_PRIVATE);
+    private void saveLoggedInUser(LoggedInUser user) {
+        SharedPreferences sharedPreferences = appContext.getSharedPreferences("user", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("userEmail", user.getEmail());
-        editor.putString("userId", user.getUserId());
+        editor.putString("userEmail", user.email());
+        editor.putString("userId", user.userId());
         editor.apply();
     }
 }

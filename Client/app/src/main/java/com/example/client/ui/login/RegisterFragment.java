@@ -21,8 +21,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.client.R;
 import com.example.client.databinding.FragmentRegisterBinding;
 
-import java.util.Objects;
-
 public class RegisterFragment extends Fragment {
 
     private LoginViewModel loginViewModel;
@@ -105,7 +103,7 @@ public class RegisterFragment extends Fragment {
     }
 
     private void updateUiWithUser(LoggedInUserView model) {
-        String welcome = getString(R.string.welcome) + model.getDisplayName();
+        String welcome = getString(R.string.welcome) + model.displayName();
         // TODO : initiate successful logged in experience
         if (getContext() != null && getContext().getApplicationContext() != null) {
             Toast.makeText(getContext().getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
