@@ -1,5 +1,6 @@
 package com.example.client.ui.produces.produce;
 
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.DatePickerDialog;
@@ -49,7 +50,7 @@ public class ProduceAddFragment extends Fragment {
         setButtonsAction(rootView);
         setProductContainerValues(rootView);
 
-        setFieldDate(rootView, R.id.tilAddedDate,  new Date());
+        setFieldDate(rootView, R.id.tilAddedDate, new Date());
 
         return rootView;
     }
@@ -61,13 +62,83 @@ public class ProduceAddFragment extends Fragment {
         setDatePickerAction(rootView);
 
         btnAdd.setOnClickListener(view -> {
-            mViewModel.addProduct(getValues(rootView));
+            var values = getValues(rootView);
+            if (!validValues(rootView, values)) {
+                return;
+            }
+            mViewModel.addProduct(values);
             requireActivity().getOnBackPressedDispatcher().onBackPressed();
         });
 
         btnBack.setOnClickListener(view -> {
             requireActivity().getOnBackPressedDispatcher().onBackPressed();
         });
+    }
+
+    private boolean validValues(View rootView, ProductFull values) {
+        boolean isValid = true;
+
+        isValid &= notEmptyString(values.productName(), rootView.findViewById(R.id.tilProductName), "Product name");
+        isValid &= positiveNotEmptyFloat(values.quantity(), rootView.findViewById(R.id.tilQuantity), "Quantity");
+        isValid &= notEmptyDate(values.expirationDate(), rootView.findViewById(R.id.tilExpirationDate), "Expiration date");
+
+        isValid &= validSpinnerSelection(rootView.findViewById(R.id.spinnerProductContainer), rootView);
+
+        isValid &= positiveEmptyFloat(values.energyValue(), rootView.findViewById(R.id.tilEnergyValue), "Energy value");
+        isValid &= positiveEmptyFloat(values.fatValue(), rootView.findViewById(R.id.tilFatValue), "Fat value");
+        isValid &= positiveEmptyFloat(values.carbohydrateValue(), rootView.findViewById(R.id.tilCarbohydrateValue), "Carbohydrate value");
+        isValid &= positiveEmptyFloat(values.sodium(), rootView.findViewById(R.id.tilSodium), "Sodium");
+        isValid &= positiveEmptyFloat(values.calcium(), rootView.findViewById(R.id.tilCalcium), "Calcium");
+        isValid &= positiveEmptyFloat(values.protein(), rootView.findViewById(R.id.tilProtein), "Protein");
+        isValid &= positiveEmptyFloat(values.vitamin(), rootView.findViewById(R.id.tilVitamin), "Vitamin");
+
+        return isValid;
+    }
+
+    private boolean validSpinnerSelection(Spinner spinner, View rootView) {
+        if (spinner.getSelectedItemPosition() <= 0) {
+            spinner.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.red));
+            return false;
+        }
+        spinner.setBackground(Objects.requireNonNull(((TextInputLayout) rootView
+                .findViewById(R.id.tilProductName)).getEditText()).getBackground());
+        return true;
+    }
+
+    private boolean notEmptyDate(Date value, TextInputLayout till, String fieldName) {
+        if (value == null) {
+            till.setError(fieldName + " cannot be empty");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean notEmptyString(String value, TextInputLayout till, String fieldName) {
+        if (value.isEmpty()) {
+            till.setError(fieldName + " cannot be empty");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean positiveNotEmptyFloat(Float value, TextInputLayout till, String fieldName) {
+        if (value == null) {
+            till.setError(fieldName + " cannot be empty");
+            return false;
+        }
+        return positiveFloat(value, till, fieldName);
+    }
+
+    private boolean positiveEmptyFloat(Float value, TextInputLayout till, String fieldName) {
+        return value == null || positiveFloat(value, till, fieldName);
+    }
+
+    private boolean positiveFloat(Float value, TextInputLayout till, String fieldName) {
+        if (value < 0) {
+            till.setError(fieldName + " cannot be less then 0");
+            return false;
+        }
+        return true;
     }
 
     private void setDatePickerAction(View rootView) {
