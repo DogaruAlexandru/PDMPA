@@ -62,8 +62,8 @@ public class ProductAPI {
         }
     }
 
-    public static void updateProduct(long productId) throws IOException {
-        RequestBody requestBody = RequestBody.create(gson.toJson(productId), JSON);
+    public static void updateProduct(ProductFull productFull) throws IOException {
+        RequestBody requestBody = RequestBody.create(gson.toJson(productFull), JSON);
 
         Request request = new Request.Builder()
                 .url(BASE_URL + UPDATE_PRODUCT_ENDPOINT)

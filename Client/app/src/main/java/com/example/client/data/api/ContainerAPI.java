@@ -61,8 +61,8 @@ public class ContainerAPI {
         }
     }
 
-    public static void updateContainer(long containerId) throws IOException {
-        RequestBody requestBody = RequestBody.create(gson.toJson(containerId), JSON);
+    public static void updateContainer(Container container) throws IOException {
+        RequestBody requestBody = RequestBody.create(gson.toJson(container), JSON);
 
         Request request = new Request.Builder()
                 .url(BASE_URL + UPDATE_CONTAINER_ENDPOINT)

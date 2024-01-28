@@ -1,6 +1,8 @@
 package com.example.client.ui.containers;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,9 +27,11 @@ public class ContainersFragment extends Fragment implements RecyclerViewInterfac
     private ContainersViewModel containersViewModel;
     private List<Container> containerList;
 
-
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         containersViewModel = new ViewModelProvider(this).get(ContainersViewModel.class);
+
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("user", Context.MODE_PRIVATE);
+        containersViewModel.setUserId(sharedPreferences.getLong("userId", -1));
 
         binding = FragmentContainersBinding.inflate(inflater, container, false);
         View root = binding.getRoot();

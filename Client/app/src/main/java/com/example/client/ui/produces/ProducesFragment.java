@@ -1,6 +1,8 @@
 package com.example.client.ui.produces;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +34,9 @@ public class ProducesFragment extends Fragment implements RecyclerViewInterface 
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         producesViewModel = new ViewModelProvider(this).get(ProducesViewModel.class);
+
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("user", Context.MODE_PRIVATE);
+        producesViewModel.setUserId(sharedPreferences.getLong("userId", -1));
 
         binding = FragmentProducesBinding.inflate(inflater, container, false);
         View root = binding.getRoot();

@@ -4,6 +4,8 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -47,6 +49,8 @@ public class ProduceAddFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_produce_add, container, false);
 
+        mViewModel.setUserId(getUserId());
+
         setButtonsAction(rootView);
         setProductContainerValues(rootView);
 
@@ -73,6 +77,11 @@ public class ProduceAddFragment extends Fragment {
         btnBack.setOnClickListener(view -> {
             requireActivity().getOnBackPressedDispatcher().onBackPressed();
         });
+    }
+
+    private long getUserId() {
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("user", Context.MODE_PRIVATE);
+        return sharedPreferences.getLong("userId", -1);
     }
 
     private boolean validValues(View rootView, ProductFull values) {

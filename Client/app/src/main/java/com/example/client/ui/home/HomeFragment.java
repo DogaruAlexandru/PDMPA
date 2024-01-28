@@ -2,6 +2,8 @@ package com.example.client.ui.home;
 
 import static com.example.client.ui.home.HomeViewModel.EMPTY_DAY_LIST;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +31,9 @@ public class HomeFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("user", Context.MODE_PRIVATE);
+        homeViewModel.setUserId(sharedPreferences.getLong("userId", -1));
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();

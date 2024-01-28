@@ -4,6 +4,8 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -54,6 +56,8 @@ public class ProduceEditFragment extends Fragment {
         assert getArguments() != null;
         productId = getArguments().getLong("productId", -1);
         mViewModel.setProductId(productId);
+
+        mViewModel.setUserId(getUserId());
 
         setButtonsAction(rootView);
         setProductContainerValues(rootView);
@@ -291,4 +295,8 @@ public class ProduceEditFragment extends Fragment {
         return ((Spinner) rootView.findViewById(id)).getSelectedItem().toString();
     }
 
+    private long getUserId() {
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("user", Context.MODE_PRIVATE);
+        return sharedPreferences.getLong("userId", -1);
+    }
 }
