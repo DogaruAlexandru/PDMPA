@@ -21,6 +21,8 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.client.R;
 import com.example.client.databinding.FragmentRegisterBinding;
 
+import java.util.Objects;
+
 public class RegisterFragment extends Fragment {
 
     private LoginViewModel loginViewModel;
@@ -42,6 +44,7 @@ public class RegisterFragment extends Fragment {
 
         final EditText usernameEditText = binding.username;
         final EditText passwordEditText = binding.password;
+        final EditText confirmPasswordEditText = binding.confirmPassword;
         final Button registerBtn = binding.registerBtn;
         final ProgressBar loadingProgressBar = binding.loading;
 
@@ -97,6 +100,11 @@ public class RegisterFragment extends Fragment {
         });
 
         registerBtn.setOnClickListener(v -> {
+            if (!confirmPasswordEditText.getText().toString().equals(passwordEditText.getText().toString())) {
+                Toast.makeText(requireContext().getApplicationContext(),
+                        "Password and confirm password are different", Toast.LENGTH_SHORT).show();
+                return;
+            }
             loadingProgressBar.setVisibility(View.VISIBLE);
             loginViewModel.register(usernameEditText.getText().toString(), passwordEditText.getText().toString());
         });
