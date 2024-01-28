@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.IBinder;
 
@@ -41,7 +42,11 @@ public class MyBackgroundService extends Service {
         getFromDB();
 
         // Start the service as a foreground service
-        startForeground(1, createNotification());
+        SharedPreferences sharedPreferences = this.getSharedPreferences("user", Context.MODE_PRIVATE);
+        long userId = sharedPreferences.getLong("userId", -1);
+        if (userId != -1) {
+            startForeground(1, createNotification());
+        }
 
         return START_STICKY;
     }

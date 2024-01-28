@@ -82,7 +82,7 @@ public class LoginViewModel extends ViewModel {
         SharedPreferences sharedPreferences = appContext.getSharedPreferences("user", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("userEmail", user.email());
-        editor.putString("userId", user.userId());
+        editor.putLong("userId", user.userId());
         editor.apply();
     }
 }

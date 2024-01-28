@@ -45,7 +45,7 @@ public class UserLoginAPI implements ServerCommunication {
             throw new IOException(json.getAsString());
         }
 
-        return new LoggedInUser(json.get("user_id").getAsString(), email);
+        return new LoggedInUser(json.get("user_id").getAsLong(), email);
     }
 
     @NonNull

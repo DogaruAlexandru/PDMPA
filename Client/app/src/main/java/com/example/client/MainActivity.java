@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+import com.example.client.data.LoginRepository;
 import com.example.client.ui.login.LoginActivity;
 import com.example.client.ui.containers.container.ContainerActivity;
 import com.example.client.ui.produces.produce.ProduceActivity;
