@@ -3,10 +3,12 @@ package com.example.client.data.api;
 import androidx.annotation.NonNull;
 
 import com.example.client.data.model.LoggedInUser;
-import com.google.gson.JsonObject;
+import com.example.client.data.model.UserLogging;
+import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -28,31 +30,24 @@ public class UserLoginAPI implements ServerCommunication {
 
     @NonNull
     private static LoggedInUser getLoggedInUser(String email, String password, String endpoint) throws IOException {
-        JsonObject json = getJsonObject(email, password);
+        Gson gson = new Gson();
 
-        RequestBody requestBody = RequestBody.create(json.getAsString(), JSON);
+        UserLogging user = new UserLogging(email, password);
+
+        RequestBody requestBody = RequestBody.create(gson.toJson(user), JSON);
 
         Request request = new Request.Builder()
                 .url(BASE_URL + endpoint)
                 .post(requestBody)
                 .build();
 
-        Response response = CLIENT.newCall(request).execute();
-        json = JsonParser.parseString(response.toString()).getAsJsonObject();
+        try (Response response = CLIENT.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                throw new IOException("Request failed with code: " + response.code());
+            }
 
-        if (!response.isSuccessful()) {
-            assert !json.isEmpty() : "Request failed with code: " + response.code();
-            throw new IOException(json.getAsString());
+            // Use Gson to deserialize the JSON response directly into a LoggedInUser object
+            return gson.fromJson(Objects.requireNonNull(response.body()).charStream(), LoggedInUser.class);
         }
-
-        return new LoggedInUser(json.get("user_id").getAsLong(), email);
-    }
-
-    @NonNull
-    private static JsonObject getJsonObject(String email, String password) {
-        JsonObject json = new JsonObject();
-        json.addProperty("username", email);
-        json.addProperty("password", password);
-        return json;
     }
 }
