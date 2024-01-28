@@ -1,8 +1,14 @@
 package com.example.client.data.api;
 
-import okhttp3.MediaType;
+import com.google.gson.Gson;
 
-public interface ServerCommunication {
-    String BASE_URL = "localhost:5000";
-    MediaType JSON = MediaType.get("application/json; charset=utf-8");
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+
+public class ServerCommunication {
+    public final static String BASE_URL = "http://192.168.0.122:5000"; //todo
+    public final static MediaType JSON = MediaType.get("application/json; charset=utf-8");
+
+    public static final OkHttpClient CLIENT = new OkHttpClient();
+    public static final Gson gson = new Gson();
 }

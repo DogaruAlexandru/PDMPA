@@ -15,7 +15,7 @@ public class LoginDataSource {
     public Result<LoggedInUser> login(String email, String password) {
         try {
             // TODO: handle loggedInUser authentication
-            LoggedInUser user = UserLoginAPI.login(email, password);
+            LoggedInUser user = UserLoginAPI.login(new UserLoginAPI.UserLogging(email, password));
             return new Result.Success<>(user);
         } catch (Exception e) {
             return new Result.Error(new IOException("Error logging in", e));
@@ -34,7 +34,7 @@ public class LoginDataSource {
     private static Result getResult(String email, String password) {
         try {
             // TODO: handle loggedInUser authentication
-            LoggedInUser user = UserLoginAPI.register(email, password);
+            LoggedInUser user = UserLoginAPI.register(new UserLoginAPI.UserLogging(email, password));
 
             return new Result.Success<>(user);
         } catch (Exception e) {
