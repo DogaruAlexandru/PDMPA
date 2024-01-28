@@ -32,8 +32,8 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
-        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("user", Context.MODE_PRIVATE);
-        homeViewModel.setUserId(sharedPreferences.getLong("userId", -1));
+        homeViewModel.setUserId(getUserId());
+        homeViewModel.setData();
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -41,6 +41,11 @@ public class HomeFragment extends Fragment {
         setData(root);
 
         return root;
+    }
+
+    private long getUserId() {
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("user", Context.MODE_PRIVATE);
+        return sharedPreferences.getLong("userId", -1);
     }
 
     private void setData(View root) {

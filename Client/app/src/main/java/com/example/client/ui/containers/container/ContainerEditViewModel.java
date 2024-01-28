@@ -14,10 +14,9 @@ public class ContainerEditViewModel extends ViewModel {
     private MutableLiveData<Container> containerMutableLiveData;
 
     private ContainerEditViewModel() {
-        setContainer();
     }
 
-    private void setContainer() {
+    public void setData() {
         getFromDB();
 
         containerMutableLiveData = new MutableLiveData<>();

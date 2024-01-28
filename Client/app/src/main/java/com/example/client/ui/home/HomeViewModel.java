@@ -36,8 +36,6 @@ public class HomeViewModel extends ViewModel {
     private List<Product> data;
 
     public HomeViewModel() {
-        setData();
-
         text = new MutableLiveData<>();
         text.setValue("Expiration dates");
     }

@@ -30,8 +30,8 @@ public class ContainersFragment extends Fragment implements RecyclerViewInterfac
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         containersViewModel = new ViewModelProvider(this).get(ContainersViewModel.class);
 
-        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("user", Context.MODE_PRIVATE);
-        containersViewModel.setUserId(sharedPreferences.getLong("userId", -1));
+        containersViewModel.setUserId(getUserId());
+        containersViewModel.setData();
 
         binding = FragmentContainersBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -39,6 +39,11 @@ public class ContainersFragment extends Fragment implements RecyclerViewInterfac
         bindContainersToView(root);
 
         return root;
+    }
+
+    private long getUserId() {
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("user", Context.MODE_PRIVATE);
+        return sharedPreferences.getLong("userId", -1);
     }
 
     private void bindContainersToView(View root) {

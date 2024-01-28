@@ -21,7 +21,6 @@ public class ProducesViewModel extends ViewModel {
     private long userId;
 
     public ProducesViewModel() {
-        setData();
     }
 
     public void setData() {

@@ -19,10 +19,9 @@ public class ProduceAddViewModel extends ViewModel {
     private long userId;
 
     private ProduceAddViewModel() {
-        setProduct();
     }
 
-    private void setProduct() {
+    public void setProduct() {
         getFromDB();
 
         containerNamesMutableLiveData = new MutableLiveData<>();

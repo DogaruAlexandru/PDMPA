@@ -42,14 +42,15 @@ public class ProduceAddFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(ProduceAddViewModel.class);
+
+        mViewModel.setUserId(getUserId());
+        mViewModel.setProduct();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_produce_add, container, false);
-
-        mViewModel.setUserId(getUserId());
 
         setButtonsAction(rootView);
         setProductContainerValues(rootView);

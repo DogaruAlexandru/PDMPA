@@ -22,14 +22,9 @@ public class ProduceEditViewModel extends ViewModel {
     private MutableLiveData<ArrayList<String>> containerNamesMutableLiveData;
 
     private ProduceEditViewModel() {
-        setProduct();
     }
 
-    private void setProduct() {
-        setData();
-    }
-
-    private void setData() {
+    public void setData() {
         getFromDB();
 
         productFullMutableLiveData = new MutableLiveData<>();

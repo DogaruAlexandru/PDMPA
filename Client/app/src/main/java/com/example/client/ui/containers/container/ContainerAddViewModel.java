@@ -12,11 +12,16 @@ import com.example.client.data.model.Container;
 import java.io.IOException;
 
 public class ContainerAddViewModel extends ViewModel {
-    public void addContainer(long userId, Container addValues) {
+    private long userId;
+    public void addContainer(Container addValues) {
         try {
             ContainerAPI.createContainer(new ContainerAPI.UserIdContainer(userId, addValues));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 }

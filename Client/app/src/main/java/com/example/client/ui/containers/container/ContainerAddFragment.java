@@ -31,6 +31,7 @@ public class ContainerAddFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(ContainerAddViewModel.class);
+        mViewModel.setUserId(getUserId());
     }
 
     @Override
@@ -49,7 +50,7 @@ public class ContainerAddFragment extends Fragment {
 
         btnAdd.setOnClickListener(view -> {
             if (validateContainerName(rootView)) {
-                mViewModel.addContainer(getUserId(), getValues(rootView));
+                mViewModel.addContainer(getValues(rootView));
                 requireActivity().getOnBackPressedDispatcher().onBackPressed();
             }
         });

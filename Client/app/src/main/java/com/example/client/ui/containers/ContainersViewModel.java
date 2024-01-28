@@ -20,7 +20,6 @@ public class ContainersViewModel extends ViewModel {
     private long userId;
 
     public ContainersViewModel() {
-        setData();
     }
 
     public void setData() {

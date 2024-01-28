@@ -45,6 +45,12 @@ public class ProduceEditFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(ProduceEditViewModel.class);
+
+        assert getArguments() != null;
+        productId = getArguments().getLong("productId", -1);
+        mViewModel.setProductId(productId);
+        mViewModel.setUserId(getUserId());
+        mViewModel.setData();
     }
 
     @Nullable
@@ -53,11 +59,6 @@ public class ProduceEditFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_produce_edit, container, false);
 
-        assert getArguments() != null;
-        productId = getArguments().getLong("productId", -1);
-        mViewModel.setProductId(productId);
-
-        mViewModel.setUserId(getUserId());
 
         setButtonsAction(rootView);
         setProductContainerValues(rootView);

@@ -6,7 +6,7 @@ import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 
 public class ServerCommunication {
-    public final static String BASE_URL = "http://192.168.0.122:5000"; //todo
+    public final static String BASE_URL = "http://192.168.0.122:5000"; //todo use the current host
     public final static MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
     public static final OkHttpClient CLIENT = new OkHttpClient();
