@@ -40,4 +40,6 @@
     <string name="edit">Edit</string>
     <string name="remove">Remove</string>
     <string name="container_name">Container Name</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
