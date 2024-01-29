@@ -8,7 +8,7 @@ app = Flask(__name__)
 connection = pymysql.connect(
     host='127.0.0.1',
     user='root',
-    password='@Nk22bdpizznthw50',
+    password='1q2w3e',
     database='android_app'
 )
 
@@ -51,19 +51,18 @@ def register():
 
     username = data.get('username')
     password = data.get('password')
-    email = data.get('email')
     if request.method == 'POST':
         with connection.cursor() as cursor:
-            sql = "SELECT * FROM app_users WHERE email = %s"
-            cursor.execute(sql, email)
+            sql = "SELECT * FROM app_users WHERE username = %s"
+            cursor.execute(sql, username)
             users = cursor.fetchall()
             if len(users) != 0:
                 return jsonify({"error": "Already existing user"})
 
             password_hash, salt = ManagePassword.hash_password(password)
 
-            sql = "INSERT INTO app_users (username, password_hash, salt,email) VALUES (%s, %s, %s,%s)"
-            cursor.execute(sql, (username, password_hash, salt, email))
+            sql = "INSERT INTO app_users (username, password_hash, salt) VALUES (%s, %s, %s)"
+            cursor.execute(sql, (username, password_hash, salt))
             connection.commit()
 
             '''sql_get_userinfo = "SELECT * FROM app_users WHERE username = %s and password_hash = %s and salt = %s"
@@ -89,12 +88,12 @@ def login():
         return jsonify({'error': "Wrong input type"})
 
     data = request.get_json()
-    email = data.get('email')
+    username = data.get('username')
     password = data.get('password')
     if request.method == 'POST':
         with connection.cursor() as cursor:
-            sql = "SELECT password_hash, salt FROM app_users WHERE email = %s"
-            cursor.execute(sql, (email,))
+            sql = "SELECT password_hash, salt FROM app_users WHERE username = %s"
+            cursor.execute(sql, (username,))
             users = cursor.fetchall()
             print(users)
             if len(users) == 0:
