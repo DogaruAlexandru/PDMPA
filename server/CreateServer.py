@@ -8,7 +8,7 @@ app = Flask(__name__)
 connection = pymysql.connect(
     host='127.0.0.1',
     user='root',
-    password='1q2w3e',
+    password='@Nk22bdpizznthw50',
     database='android_app'
 )
 
@@ -92,7 +92,7 @@ def login():
     password = data.get('password')
     if request.method == 'POST':
         with connection.cursor() as cursor:
-            sql = "SELECT password_hash, salt FROM app_users WHERE username = %s"
+            sql = "SELECT user_id, password_hash, salt FROM app_users WHERE username = %s"
             cursor.execute(sql, (username,))
             users = cursor.fetchall()
             print(users)
@@ -100,13 +100,16 @@ def login():
                 return jsonify({"error": "User not found"})
 
             for user in users:
-                if ManagePassword.verify_password(password, user[0], user[1]):
+                # user[1] - password_hash, user[2] - salt
+                if ManagePassword.verify_password(password, user[1], user[2]):
+                    # user[0] - user_id
                     return jsonify({'user_id': user[0], 'message': 'User logged successfully'})
 
             return jsonify({"error": "Invalid password"})
 
-
 # Endpoint for storage space management
+
+
 @app.route('/storage_space', methods=['POST', 'GET'])
 def storage_space_management():
     try:
