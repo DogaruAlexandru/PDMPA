@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.util.Patterns;
 
 import com.example.client.data.LoginRepository;
@@ -15,6 +16,7 @@ import com.example.client.R;
 
 public class LoginViewModel extends ViewModel {
 
+    private static final String TAG = "Login";
     private final Context appContext;
     private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
     private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
@@ -34,8 +36,11 @@ public class LoginViewModel extends ViewModel {
     }
 
     public void login(String username, String password) {
+
+        Log.d(TAG, "Login method in login view called " );
         // can be launched in a separate asynchronous job
         Result<LoggedInUser> result = loginRepository.login(username, password);
+        Log.d(TAG, "reuslt " +result );
         resultValidation(result);
     }
 

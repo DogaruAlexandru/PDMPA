@@ -8,14 +8,14 @@ app = Flask(__name__)
 connection = pymysql.connect(
     host='127.0.0.1',
     user='root',
-    password='mysql1234',
+    password='@Nk22bdpizznthw50',
     database='android_app'
 )
 
 
 # Endpoint to create a new user
-#@app.route('/app_users', methods=['POST', 'GET'])
-#def login_credentials_usage():
+# @app.route('/app_users', methods=['POST', 'GET'])
+# def login_credentials_usage():
 #    try:
 #        request.get_json()
 #    except Exception:
@@ -48,23 +48,25 @@ def register():
         return jsonify({'error': "Wrong input type"})
 
     data = request.get_json()
+
     username = data.get('username')
     password = data.get('password')
+    email = data.get('email')
     if request.method == 'POST':
         with connection.cursor() as cursor:
-            sql = "SELECT * FROM app_users WHERE username = %s"
-            cursor.execute(sql, username)
+            sql = "SELECT * FROM app_users WHERE email = %s"
+            cursor.execute(sql, email)
             users = cursor.fetchall()
-            if users.count() != 0:
+            if len(users) != 0:
                 return jsonify({"error": "Already existing user"})
 
             password_hash, salt = ManagePassword.hash_password(password)
 
-            sql = "INSERT INTO app_users (username, password_hash, salt) VALUES (%s, %s, %s)"
-            cursor.execute(sql, (username, password_hash, salt))
+            sql = "INSERT INTO app_users (username, password_hash, salt,email) VALUES (%s, %s, %s,%s)"
+            cursor.execute(sql, (username, password_hash, salt, email))
             connection.commit()
 
-            sql_get_userinfo = "SELECT * FROM app_users WHERE username = %s and password_hash = %s and salt = %s"
+            '''sql_get_userinfo = "SELECT * FROM app_users WHERE username = %s and password_hash = %s and salt = %s"
             cursor.execute(sql_get_userinfo, (username, password_hash, salt))
             users = cursor.fetchall()
 
@@ -73,7 +75,7 @@ def register():
 
             for user in users:
                 print(jsonify(user))
-                return jsonify({'user_id': user["user_id"], 'message': 'User created successfully'})
+                return jsonify({'user_id': user["user_id"], 'message': 'User created successfully'})'''
 
         return jsonify({'message': 'User created successfully'})
 
@@ -87,21 +89,21 @@ def login():
         return jsonify({'error': "Wrong input type"})
 
     data = request.get_json()
-    username = data.get('username')
+    email = data.get('email')
     password = data.get('password')
     if request.method == 'POST':
         with connection.cursor() as cursor:
-            sql = "SELECT * FROM app_users WHERE username = %s"
-            cursor.execute(sql, (username))
+            sql = "SELECT password_hash, salt FROM app_users WHERE email = %s"
+            cursor.execute(sql, (email,))
             users = cursor.fetchall()
-
+            print(users)
             if len(users) == 0:
                 return jsonify({"error": "User not found"})
 
             for user in users:
-                if ManagePassword.verify_password(password, user["password_hash"], user["salt"]):
-                    return jsonify({'user_id': user["user_id"], 'message': 'User logged successfully'})
-                
+                if ManagePassword.verify_password(password, user[0], user[1]):
+                    return jsonify({'user_id': user[0], 'message': 'User logged successfully'})
+
             return jsonify({"error": "Invalid password"})
 
 
@@ -174,6 +176,8 @@ def get_products_list():
         return jsonify(cursor.fetchall())
 
 # Enpoint to retreive products AND their container from a specific user
+
+
 @app.route('/productAndContainer/all_from_user', methods=['GET'])
 def get_products_with_containers_list():
     try:
