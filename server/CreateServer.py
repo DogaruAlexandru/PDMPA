@@ -110,47 +110,135 @@ def login():
 # Endpoint for storage space management
 
 
-@app.route('/storage_space', methods=['POST', 'GET'])
-def storage_space_management():
+@app.route('/create_container', methods=['POST'])
+def create_storage_space():
     try:
         request.get_json()
     except Exception:
         return jsonify({'error': "Wrong input type. If you don't want to add a request body, sent {} as body"})
 
     data = request.get_json()
+    user_id=data.get('user_id')
     storage_name = data.get('storage_name')
-    if request.method == 'POST':
-        with connection.cursor() as cursor:
-            sql = "INSERT INTO storage_space (storage_name) VALUES (%s)"
-            cursor.execute(sql, storage_name)
-            connection.commit()
-        return jsonify({'message': 'Storage space created successfully'})
-
-    if request.method == 'GET':
-        with connection.cursor() as cursor:
-            sql = "SELECT * FROM storage_space"
-            cursor.execute(sql)
-            return jsonify(cursor.fetchall())
+    
+    with connection.cursor() as cursor:
+        sql = "INSERT INTO storage_space (storage_name,user_id) VALUES (%s,%s)"
+        cursor.execute(sql, (storage_name,user_id))
+        connection.commit()
+    return jsonify({'message': 'Storage space created successfully'})
 
 
-# Enpoint for creating a new product
-@app.route('/product', methods=['POST'])
-def create_product():
-    """try:
+@app.route('/user_container', methods=['GET'])
+def get_user_storage_space():
+    try:
         request.get_json()
     except Exception:
         return jsonify({'error': "Wrong input type. If you don't want to add a request body, sent {} as body"})
-"""
+
     data = request.get_json()
+    user_id=data.get('user_id')
+    
+    with connection.cursor() as cursor:
+        sql = "SELECT storage_name FROM storage_space WHERE user_id= %s"
+        cursor.execute(sql, user_id)
+        connection.commit()
+    return jsonify(cursor.fetchall())
+
+@app.route('/update_container', methods=['PUT'])
+def storage_space_update():
+    try:
+        request.get_json()
+    except Exception:
+        return jsonify({'error': "Wrong input type. If you don't want to add a request body, sent {} as body"})
+
+    data = request.get_json()
+    container_id=data.get('storage_id')
+    storage_name = data.get('storage_name')
+    
+    with connection.cursor() as cursor:
+        sql = "UPDATE storage_space SET storage_name=%s WHERE storage_id = %s"
+        cursor.execute(sql, (storage_name,container_id))
+        connection.commit()
+    return jsonify({'message': 'Storage space updated successfully'})
+
+@app.route('/get_container', methods=['GET'])
+def get_storage_space():
+    try:
+        request.get_json()
+    except Exception:
+        return jsonify({'error': "Wrong input type. If you don't want to add a request body, sent {} as body"})
+
+    data = request.get_json()
+    container_id=data.get('storage_id')
+    
+    with connection.cursor() as cursor:
+        sql = "SELECT storage_name FROM storage_space WHERE storage_id= %s"
+        cursor.execute(sql, container_id)
+        connection.commit()
+    return jsonify(cursor.fetchall())
+
+@app.route('/delete_container', methods=['DELETE'])
+def delete_storage_space():
+    try:
+        request.get_json()
+    except Exception:
+        return jsonify({'error': "Wrong input type. If you don't want to add a request body, sent {} as body"})
+
+    data = request.get_json()
+    container_id=data.get('storage_id')
+    
+    with connection.cursor() as cursor:
+        sql_product = "DELETE FROM product WHERE container_id = %s"
+        cursor.execute(sql_product, (container_id,))
+        connection.commit()
+
+        sql_storage_space = "DELETE FROM storage_space WHERE storage_id = %s"
+        cursor.execute(sql_storage_space, (container_id,))
+        connection.commit()
+    return jsonify({'message': 'Storage deleted successfully'})
+
+# Enpoint for creating a new product
+@app.route('/create_product', methods=['POST'])
+def create_product():
+    try:
+        request.get_json()
+    except Exception:
+        return jsonify({'error': "Wrong input type. If you don't want to add a request body, sent {} as body"})
+
+    data = request.get_json()
+
     user_id = data.get('user_id')
-    container_id = data.get('container_id')
+    container_name = data.get('storage_name')
     product_name = data.get('product_name')
     expiration_date = data.get('expiration_date')
     quantity_grams = data.get('quantity_grams')
     date_added = data.get('date_added')
-    product_info_id = data.get('product_info_id')
+
+    energy_value = data.get('energy_value')
+    fat_value = data.get('fat_value')
+    carbohydrate_value = data.get('carbohydrate_value')
+    sodium = data.get('sodium')
+    calcium = data.get('calcium')
+    protein = data.get('protein')
+    vitamin = data.get('vitamin')
+    vitamin_type = data.get('vitamin_type')
+    allergens = data.get('allergens')
+    allergens_str = ', '.join(allergens) if allergens else None
     # print(type(user_id),type(container_id), type(product_name),type(expiration_date),type(quantity_grams),type(date_added),type(product_info_id))
     with connection.cursor() as cursor:
+        sql = "INSERT INTO product_info (product_name,energy_value,fat_value,carbohydrate_value,sodium,calcium,protein,vitamin,vitamin_type,allergens) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+        cursor.execute(sql, (product_name, energy_value, fat_value, carbohydrate_value,
+                       sodium, calcium, protein, vitamin, vitamin_type, allergens_str))
+        connection.commit()
+        # Obținerea product_info_id-ului generat
+        product_info_id = cursor.lastrowid
+
+        # Obținerea container_id-ului bazat pe container_name
+        sql_container = "SELECT storage_id FROM storage_space WHERE storage_name = %s"
+        cursor.execute(sql_container, (container_name,))
+        container_data = cursor.fetchone()
+        container_id = container_data[0] if container_data else None
+
         sql = "INSERT INTO product (user_id,container_id,product_name,expiration_date,quantity_grams,date_added, product_info_id) VALUES (%s,%s,%s,%s,%s,%s,%s)"
         cursor.execute(sql, (user_id, container_id, product_name,
                        expiration_date, quantity_grams, date_added, product_info_id))
@@ -159,12 +247,12 @@ def create_product():
 
 
 # Enpoint to retreive products from a specific user
-@app.route('/product/all_from_user', methods=['GET'])
+@app.route('/user_product', methods=['GET'])
 def get_products_list():
     try:
         request.get_json()
     except Exception:
-        return jsonify({'error': "Wrong input type. Needed request body format: { \"user_id\":<value>}"})
+        return jsonify({'error': "Wrong input type."})
 
     data = request.get_json()
     user_id = data.get('user_id')
@@ -172,31 +260,114 @@ def get_products_list():
     if user_id is None:
         return jsonify({'error': "Wrong input type. Need for user_id"})
 
+    products = []
+
     with connection.cursor() as cursor:
-        sql = "SELECT * FROM product WHERE user_id = %s"
-        cursor.execute(sql, user_id)
-        return jsonify(cursor.fetchall())
+        sql = "SELECT p.container_id, p.product_name, p.expiration_date, p.quantity_grams, p.date_added, p.product_info_id FROM product p WHERE p.user_id = %s"
+        cursor.execute(sql, (user_id,))
+        product_data = cursor.fetchall()
+
+        for row in product_data:
+            container_id, product_name, expiration_date, quantity_grams, date_added, product_info_id = row
+            sql = "SELECT storage_name FROM storage_space WHERE storage_id = %s"
+            cursor.execute(sql, (container_id,))
+            container_data = cursor.fetchone()
+            if container_data:
+                container_name = container_data[0]
+            else:
+                # Tratarea cazului în care nu există nicio înregistrare găsită
+                container_name = None  # sau un alt comportament adecvat în funcție de cerințele aplicației
+
+
+            product = {
+                "id": product_info_id,
+                "name": product_name,
+                "expiration_date": expiration_date,
+                "quantity": quantity_grams,
+                "container": container_name
+            }
+
+            products.append(product)
+
+    return jsonify(products)
+
 
 # Enpoint to retreive products AND their container from a specific user
 
 
-@app.route('/productAndContainer/all_from_user', methods=['GET'])
-def get_products_with_containers_list():
+@app.route('/update_product', methods=['PUT'])
+def update_product():
     try:
         request.get_json()
     except Exception:
         return jsonify({'error': "Wrong input type. Needed request body format: { \"user_id\":<value>}"})
 
     data = request.get_json()
-    user_id = data.get('user_id')
-
-    if user_id is None:
-        return jsonify({'error': "Wrong input type. Need for user_id"})
+    
+    product_info_id = data.get('product_id')
+    product_name=data.get('product_name')
+    energy_value = data.get('energy_value')
+    fat_value = data.get('fat_value')
+    carbohydrate_value = data.get('carbohydrate_value')
+    sodium = data.get('sodium')
+    calcium = data.get('calcium')
+    protein = data.get('protein')
+    vitamin = data.get('vitamin')
+    vitamin_type = data.get('vitamin_type')
+    allergens = data.get('allergens')
+    allergens_str = ', '.join(allergens) if allergens else None
 
     with connection.cursor() as cursor:
-        sql = "SELECT * FROM product join storage_space on product.container_id = storage_space.storage_id WHERE user_id = %s"
-        cursor.execute(sql, user_id)
+        sql = "UPDATE product_info SET product_name =%s, energy_value = %s, fat_value = %s, carbohydrate_value = %s ,sodium =%s ,calcium=%s , protein =%s, vitamin=%s , vitamin_type = %s , allergens =%s WHERE product_id = %s"
+        cursor.execute(sql, (product_name,energy_value,fat_value,carbohydrate_value,sodium,calcium,protein,vitamin,vitamin_type,allergens_str,product_info_id))
+        connection.commit()
+        
+        return jsonify({'message': 'Product updated successfully'})
+
+
+
+@app.route('/get_product', methods=['GET'])
+def get_product_info():
+    try:
+        request.get_json()
+    except Exception:
+        return jsonify({'error': "Wrong input type. Needed request body format: { \"user_id\":<value>}"})
+
+    data = request.get_json()
+    
+    product_info_id = data.get('product_id')
+   
+    with connection.cursor() as cursor:
+        sql = "SELECT  product_name , energy_value , fat_value, carbohydrate_value  ,sodium  ,calcium , protein , vitamin , vitamin_type  , allergens FROM product_info WHERE product_id = %s"
+        cursor.execute(sql, (product_info_id))
+        connection.commit()
+        
         return jsonify(cursor.fetchall())
+    
+@app.route('/delete_product', methods=['DELETE'])
+def get_products_with_containers_list():
+    try:
+        request.get_json()
+    except Exception:
+        return jsonify({'error': "Wrong input type. "})
+
+    data = request.get_json()
+    
+    product_info_id = data.get('product_id')
+   
+
+    with connection.cursor() as cursor:
+        sql = "DELETE FROM product WHERE product_info_id = %s"
+        cursor.execute(sql, (product_info_id))
+        connection.commit()   
+        
+        sql = "DELETE FROM product_info WHERE product_id = %s"
+        cursor.execute(sql, (product_info_id))
+        connection.commit()
+        
+       
+        
+        return jsonify({'message': 'deleted  successfully'})
 
 
 # Endpoint to handle CRUD operations for recipes
@@ -315,7 +486,7 @@ def user_recipes():
     else:
         return jsonify({'message': 'Method not allowed'})
 
-
+'''
 # Endpoint for CRUD operations on the product_info table
 @app.route('/product_info', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def product_info():
@@ -362,7 +533,7 @@ def product_info():
         return jsonify({'message': 'Product deleted successfully'})
     else:
         return jsonify({'message': 'Method not allowed'})
-
+'''
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
