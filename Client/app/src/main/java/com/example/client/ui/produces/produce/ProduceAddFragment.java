@@ -22,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 
 import com.example.client.R;
@@ -86,10 +87,7 @@ public class ProduceAddFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_produce_add, container, false);
 
-        //detailsFragment = new ProduceDetailsFragment();
-        //detailsFragment.setProduceAddFragment(this);
-        //detailsFragment.onCreateView( inflater, container,
-        // savedInstanceState);
+
 
         setButtonsAction(rootView);
         setProductContainerValues(rootView);
@@ -103,7 +101,7 @@ public class ProduceAddFragment extends Fragment {
         setDoubleValue(rootView,R.id.tilSodium,0.0);
         setDoubleValue(rootView,R.id.tilCalcium,0.0);
         setDoubleValue(rootView,R.id.tilProtein,0.0);
-        setStringValue(rootView,R.id.tilVitamin," ");
+        setDoubleValue(rootView,R.id.tilVitamin,0.0);
         setStringValue(rootView,R.id.tilVitaminType," ");
         setStringValue(rootView,R.id.tilAllergens," ");
 
@@ -111,7 +109,7 @@ public class ProduceAddFragment extends Fragment {
 
 
         // Find the button and set a click listener for it
-        Button openCameraButton = rootView.findViewById(R.id.openCam);
+        ImageButton openCameraButton = rootView.findViewById(R.id.openCam);
         openCameraButton.setOnClickListener(v -> openCamera());
 
         return rootView;
@@ -246,7 +244,7 @@ public class ProduceAddFragment extends Fragment {
                 Double sodium = foodObject.optDouble("nf_sodium",0);
                 Double calcium = foodObject.optDouble("calcium", 0); // Assuming this is available in the response
                 Double protein = foodObject.optDouble("nf_protein",0);
-                String vitamin = foodObject.optString("vitamin", null); // Example field, replace with actual field name
+                Double vitamin = foodObject.optDouble("vitamin", 0); // Example field, replace with actual field name
                 String vitaminType = foodObject.optString("vitaminType", null); // Example field, replace with actual field name
                 String allergens = foodObject.optString("allergens", null);
 
@@ -271,7 +269,7 @@ public class ProduceAddFragment extends Fragment {
                 setDoubleValue(getView(),R.id.tilSodium,sodium);
                 setDoubleValue(getView(),R.id.tilCalcium,calcium);
                 setDoubleValue(getView(),R.id.tilProtein,protein);
-                setStringValue(getView(),R.id.tilVitamin,vitamin);
+                setDoubleValue(getView(),R.id.tilVitamin,vitamin);
                 setStringValue(getView(),R.id.tilVitaminType,vitaminType);
                 setStringValue(getView(),R.id.tilAllergens,allergens);
 
