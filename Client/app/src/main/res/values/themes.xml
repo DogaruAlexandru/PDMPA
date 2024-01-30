@@ -28,4 +28,9 @@
     <style name="Theme.Client.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.Client.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+  <!-- Base application theme. -->
+    <style name="Base.Theme.Client" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    </style>
 </resources>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.recipes.recipe.RecipeViewFragment">
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Recipe Title"
+        android:textSize="30dp"
+        android:gravity="center"
+        android:id="@+id/recipe_title"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/ingredients"
+        android:layout_below="@id/recipe_title"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="30dp"
+        android:textSize="12dp"
+        android:id="@+id/recipe_ingredients_title"
+        android:textColor="@color/gray_500"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/recipe_ingredients_title"
+        tools:text="Ingredient; List; Goes; Here; Like; This"
+        android:layout_marginLeft="15dp"
+        android:textSize="20dp"
+        android:id="@+id/recipe_ingredients_list"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/recipe_ingredients_list"
+        android:text="@string/recipe_description"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="15dp"
+        android:textSize="12dp"
+        android:textColor="@color/gray_500"
+        android:id="@+id/recipe_description_title"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/recipe_description_title"
+        tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer id porta erat, consectetur euismod neque. Aliquam vel velit mi. Praesent finibus mollis mollis. Sed a lorem congue dui fringilla fringilla et ac nisl. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Phasellus libero enim, posuere in magna quis, auctor tincidunt massa. Pellentesque non diam urna. Maecenas rutrum viverra feugiat. Proin pharetra nec nibh sit amet finibus. "
+        android:layout_marginLeft="15dp"
+        android:textSize="20dp"
+        android:id="@+id/recipe_description"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/recipe_edit_button"
+        android:layout_below="@id/recipe_description"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="30dp"
+        android:id="@+id/recipe_edit_button"/>
+
+    <Button
+        android:id="@+id/recipe_delete_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/recipe_description"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/recipe_delete_button" />
+
+</RelativeLayout>
