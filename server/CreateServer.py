@@ -1,3 +1,4 @@
+import datetime
 from flask import Flask, jsonify, request
 import pymysql
 import ManagePassword
@@ -286,14 +287,39 @@ def create_product():
         vitamin = productFull.get('vitamin')
         vitaminType = productFull.get('vitaminType')
         allergens = productFull.get('allergens')
+        
+        expiration_date_parts = expirationDate.split(' ')
+        month_str = expiration_date_parts[0]
+        day_str = expiration_date_parts[1][:-1]  # eliminarea virgulei
+        year_str = expiration_date_parts[2]
 
-        vitaminType_str = json.dumps(vitaminType) if vitaminType else None
-        allergens_str = json.dumps(allergens) if allergens else None
+        # Mapare lună
+        months = {
+            "Jan": "01", "Feb": "02", "Mar": "03", "Apr": "04",
+            "May": "05", "Jun": "06", "Jul": "07", "Aug": "08",
+            "Sep": "09", "Oct": "10", "Nov": "11", "Dec": "12"
+        }
+        month = months[month_str]
+
+        # Rearanjarea în formatul "YYYY-MM-DD" pentru data de expirare
+        expiration_date_formatted = f"{year_str}-{month}-{day_str}"
+
+        # Extragerea componentelor datei de adăugare
+        added_date_parts = addedDate.split(' ')
+        added_month_str = added_date_parts[0]
+        added_day_str = added_date_parts[1][:-1]  # eliminarea virgulei
+        added_year_str = added_date_parts[2]
+
+        added_month = months[added_month_str]
+
+        added_date_formatted = f"{added_year_str}-{added_month}-{added_day_str}"
+
+        
 
         with connection.cursor() as cursor:
             # Insert into product_info table
             sql = "INSERT INTO product_info (energy_value,fat_value,carbohydrate_value,sodium,calcium,protein,vitamin,vitamin_type,allergens) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-            cursor.execute(sql, ( energyValue, fatValue, carbohydrateValue, sodium, calcium, protein, vitamin, vitaminType_str, allergens_str))
+            cursor.execute(sql, ( energyValue, fatValue, carbohydrateValue, sodium, calcium, protein, vitamin, vitaminType, allergens))
             connection.commit()
             # Get the generated product_info_id
             product_info_id = cursor.lastrowid
@@ -306,7 +332,7 @@ def create_product():
 
             # Insert into product table
             sql = "INSERT INTO product (user_id,container_id,product_name,expiration_date,quantity_grams,date_added, product_info_id) VALUES (%s,%s,%s,%s,%s,%s,%s)"
-            cursor.execute(sql, (userId, container_id, productName, expirationDate, quantity, addedDate, product_info_id))
+            cursor.execute(sql, (userId, container_id, productName, expiration_date_formatted, quantity, added_date_formatted, product_info_id))
             connection.commit()
 
         return jsonify({'message': 'Product created successfully'})
@@ -432,6 +458,8 @@ def get_product_info():
                 product_info = cursor.fetchone()
 
                 if product_info:
+                    vitaminType = json.loads(product_info[7])
+                    allergens = json.loads(product_info[8])
                     # Construirea obiectului ProductFull
                     product_full = ProductFull(
                         productId,
@@ -447,8 +475,8 @@ def get_product_info():
                         product_info[4],
                         product_info[5],
                         product_info[6],
-                        product_info[7],
-                        product_info[8]
+                        vitaminType,
+                        allergens
                     )
 
                     return jsonify(product_full.__dict__)
