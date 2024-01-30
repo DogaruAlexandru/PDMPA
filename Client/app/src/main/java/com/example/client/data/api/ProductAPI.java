@@ -133,7 +133,7 @@ public class ProductAPI {
 
         Request request = new Request.Builder()
                 .url(BASE_URL + UPDATE_PRODUCT_ENDPOINT)
-                .post(requestBody)
+                .put(requestBody)
                 .build();
 
         try (Response response = CLIENT.newCall(request).execute()) {
@@ -208,7 +208,7 @@ public class ProductAPI {
 
         Request request = new Request.Builder()
                 .url(BASE_URL + DELETE_PRODUCT_ENDPOINT)
-                .post(requestBody)
+                .delete(requestBody)
                 .build();
 
         try (Response response = CLIENT.newCall(request).execute()) {

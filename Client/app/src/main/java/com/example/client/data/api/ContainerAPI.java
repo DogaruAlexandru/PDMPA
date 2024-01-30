@@ -30,7 +30,7 @@ public class ContainerAPI {
     public record UserIdContainer(long userId, Container container) {
     }
 
-    public static List<Container> getContainers(long userId) throws IOException, ExecutionException, InterruptedException {
+    public static List<Container> getContainers(long userId) throws IOException {
         // Create a Callable to perform the network call
         Callable<List<Container>> getContainersCallable = () -> getContainersCall(userId);
 
@@ -133,7 +133,7 @@ public class ContainerAPI {
 
         Request request = new Request.Builder()
                 .url(BASE_URL + UPDATE_CONTAINER_ENDPOINT)
-                .post(requestBody)
+                .put(requestBody)
                 .build();
 
         try (Response response = CLIENT.newCall(request).execute()) {
@@ -208,7 +208,7 @@ public class ContainerAPI {
 
         Request request = new Request.Builder()
                 .url(BASE_URL + DELETE_CONTAINER_ENDPOINT)
-                .post(requestBody)
+                .delete(requestBody)
                 .build();
 
         try (Response response = CLIENT.newCall(request).execute()) {

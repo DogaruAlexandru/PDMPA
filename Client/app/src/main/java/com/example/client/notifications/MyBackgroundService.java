@@ -42,8 +42,7 @@ public class MyBackgroundService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         // Start the service as a foreground service
-        SharedPreferences sharedPreferences = this.getSharedPreferences("user", Context.MODE_PRIVATE);
-        long userId = sharedPreferences.getLong("userId", -1);
+        long userId = getUserId();
         if (userId != -1) {
             getFromDB();
 
@@ -53,9 +52,13 @@ public class MyBackgroundService extends Service {
         return START_STICKY;
     }
 
-    private void getFromDB() {
+    private long getUserId() {
         SharedPreferences sharedPreferences = this.getSharedPreferences("user", Context.MODE_PRIVATE);
-        long userId = sharedPreferences.getLong("userId", -1);
+        return sharedPreferences.getLong("userId", -1);
+    }
+
+    private void getFromDB() {
+        long userId = getUserId();
         try {
             data = ProductAPI.getProducts(userId);
         } catch (IOException e) {
