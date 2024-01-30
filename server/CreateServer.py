@@ -292,8 +292,8 @@ def create_product():
 
         with connection.cursor() as cursor:
             # Insert into product_info table
-            sql = "INSERT INTO product_info (product_name,energy_value,fat_value,carbohydrate_value,sodium,calcium,protein,vitamin,vitamin_type,allergens) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-            cursor.execute(sql, (productName, energyValue, fatValue, carbohydrateValue, sodium, calcium, protein, vitamin, vitaminType_str, allergens_str))
+            sql = "INSERT INTO product_info (energy_value,fat_value,carbohydrate_value,sodium,calcium,protein,vitamin,vitamin_type,allergens) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+            cursor.execute(sql, ( energyValue, fatValue, carbohydrateValue, sodium, calcium, protein, vitamin, vitaminType_str, allergens_str))
             connection.commit()
             # Get the generated product_info_id
             product_info_id = cursor.lastrowid
@@ -368,11 +368,11 @@ def update_product():
     sodium = data.get('sodium')
     calcium = data.get('calcium')
     protein = data.get('protein')
-    vitamin = data.get('vitamin')
     vitaminType = data.get('vitaminType')
-    vitaminType_str = ', '.join(vitaminType) if vitaminType else None
     allergens = data.get('allergens')
-    allergens_str = ', '.join(allergens) if allergens else None
+
+    vitaminType_str = json.dumps(vitaminType) if vitaminType else None
+    allergens_str = json.dumps(allergens) if allergens else None
 
     with connection.cursor() as cursor:
         sql = "SELECT storage_id FROM storage_space WHERE storage_name= %s"
@@ -394,8 +394,8 @@ def update_product():
         
         
         
-        sql_product_info = "UPDATE product_info SET product_name =%s, energy_value = %s, fat_value = %s, carbohydrate_value = %s ,sodium =%s ,calcium=%s , protein =%s, vitamin=%s , vitamin_type = %s , allergens =%s WHERE product_id = %s"
-        cursor.execute(sql_product_info, (productName,energyValue,fatValue,carbohydrateValue,sodium,calcium,protein,vitamin,vitaminType_str,allergens_str,product_info_id))
+        sql_product_info = "UPDATE product_info SET  energy_value = %s, fat_value = %s, carbohydrate_value = %s ,sodium =%s ,calcium=%s , protein =%s, vitamin=%s , vitamin_type = %s , allergens =%s WHERE product_id = %s"
+        cursor.execute(sql_product_info, (energyValue,fatValue,carbohydrateValue,sodium,calcium,protein,vitamin,vitaminType_str,allergens_str,product_info_id))
         connection.commit()
         
         return jsonify({'message': 'Product updated successfully'})
