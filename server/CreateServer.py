@@ -164,8 +164,9 @@ def storage_space_update():
 
     try:
         data = request.get_json()
-        id = data.get('id')
-        name = data.get('name')
+        container = data.get('container')
+        id = container.get('id')
+        name = container.get('name')
         
         with connection.cursor() as cursor:
             sql = "UPDATE storage_space SET storage_name=%s WHERE storage_id = %s"
@@ -186,11 +187,21 @@ def get_storage_space():
         return jsonify({'error': "Missing storage_id parameter."}), 400
     
     with connection.cursor() as cursor:
-        sql = "SELECT storage_id, storage_name FROM storage_space WHERE storage_id= %s"
-        cursor.execute(sql, containerId)
-        connection.commit()
+        sql = "SELECT storage_id, storage_name FROM storage_space WHERE storage_id = %s"
+        cursor.execute(sql, (containerId,))
+        storage_spaces = cursor.fetchall()
+
+        # Construct the list of Container objects
+        containers = []
+        for space in storage_spaces:
+            container = Container(id=space[0], name=space[1])
+            containers.append(container)
+
+        # Return the list of Container objects as JSON
+        return jsonify([container.__dict__ for container in containers])
+
         
-    return jsonify(cursor.fetchall())
+  
 
 @app.route('/delete_container', methods=['DELETE'])
 def delete_storage_space():
