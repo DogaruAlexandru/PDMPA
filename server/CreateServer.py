@@ -240,7 +240,7 @@ def create_product():
 
 
 # Enpoint to retreive products from a specific user
-@app.route('/user_product', methods=['GET'])
+@app.route('/user_products', methods=['GET'])
 def get_products_list():
     try:
         request.get_json()
