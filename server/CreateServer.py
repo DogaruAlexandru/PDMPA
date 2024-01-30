@@ -368,6 +368,7 @@ def update_product():
     sodium = data.get('sodium')
     calcium = data.get('calcium')
     protein = data.get('protein')
+    vitamin=data.get('vitamin')
     vitaminType = data.get('vitaminType')
     allergens = data.get('allergens')
 
