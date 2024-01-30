@@ -8,6 +8,7 @@ app = Flask(__name__)
 # Configure the database connection
 connection = pymysql.connect(
     host='127.0.0.1',
+    password='@Nk22bdpizznthw50',
     user='root',
     database='android_app'
 )
@@ -297,8 +298,8 @@ def create_product():
             product_info_id = cursor.lastrowid
 
             # Get container_id based on container_name
-            sql_container = "SELECT storage_id FROM storage_space WHERE storage_name = %s"
-            cursor.execute(sql_container, (productContainer,))
+            sql_container = "SELECT storage_id FROM storage_space WHERE storage_name = %s AND user_id=%s"
+            cursor.execute(sql_container, (productContainer,userId))
             container_data = cursor.fetchone()
             container_id = container_data[0] if container_data else None
 
