@@ -180,25 +180,27 @@ def storage_space_update():
 @app.route('/get_container', methods=['GET'])
 def get_storage_space():
 
-    
     containerId = request.args.get('containerId')
 
     if containerId is None:
         return jsonify({'error': "Missing storage_id parameter."}), 400
     
-    with connection.cursor() as cursor:
-        sql = "SELECT storage_id, storage_name FROM storage_space WHERE storage_id = %s"
-        cursor.execute(sql, (containerId,))
-        storage_spaces = cursor.fetchall()
+    try:
+        with connection.cursor() as cursor:
+            sql = "SELECT storage_id, storage_name FROM storage_space WHERE storage_id = %s"
+            cursor.execute(sql, (containerId,))
+            storage_space = cursor.fetchone()  # Fetch only one row
 
-        # Construct the list of Container objects
-        containers = []
-        for space in storage_spaces:
-            container = Container(id=space[0], name=space[1])
-            containers.append(container)
+        # If storage space is found, construct the Container object
+        if storage_space:
+            container = Container(id=storage_space[0], name=storage_space[1])
+            return jsonify(container.__dict__)
 
-        # Return the list of Container objects as JSON
-        return jsonify([container.__dict__ for container in containers])
+        # If storage space is not found, return appropriate error message
+        return jsonify({'error': f"Storage space with ID {containerId} not found."}), 404
+
+    except Exception as e:
+        return jsonify({'error': str(e)})
 
         
   
