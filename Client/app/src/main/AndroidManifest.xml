@@ -38,7 +38,6 @@
             android:name=".ui.login.LoginActivity"
             android:configChanges="orientation"
             android:exported="true"
-            android:label="@string/title_activity_login"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Client.NoActionBar">
             <intent-filter>
@@ -54,7 +53,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Client.NoActionBar" >
         </activity>
-        
+
         <service
             android:name=".notifications.MyBackgroundService"
             android:enabled="true"
