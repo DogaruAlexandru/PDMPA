@@ -56,4 +56,8 @@ public class RecipeViewModel extends ViewModel{
     public LiveData<Recipe> getRecipeMutableLiveData() {
         return recipeMutableLiveData;
     }
+
+    public void deleteRecipe(long recipeId) {
+        // TODO: Delete recipe from DB
+    }
 }
