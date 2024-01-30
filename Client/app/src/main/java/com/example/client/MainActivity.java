@@ -87,6 +87,8 @@ public class MainActivity extends AppCompatActivity {
 
         binding.appBarMain.fabRecipes.setOnClickListener(view -> {
             Intent intent = new Intent(this, RecipeActivity.class);
+            intent.putExtra("type", "add");
+            startActivity(intent);
         });
     }
 
