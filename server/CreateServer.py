@@ -9,7 +9,7 @@ app = Flask(__name__)
 connection = pymysql.connect(
     host='127.0.0.1',
     user='root',
-    password='@Nk22bdpizznthw50',
+    password='1q2w3e',
     database='android_app'
 )
 
@@ -214,9 +214,6 @@ def delete_storage_space():
     if containerId is None:
         return jsonify({'error': "Missing storage_id parameter."}), 400
     try:
-        data = request.get_json()
-        containerId=data.get('containerId')
-        
         with connection.cursor() as cursor:
             sql_product = "DELETE FROM product WHERE container_id = %s"
             cursor.execute(sql_product, (containerId,))

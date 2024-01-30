@@ -164,7 +164,7 @@ public class ProductAPI {
     }
 
     private static ProductFull getProductCall(long productId) throws IOException {
-        String urlWithParams = BASE_URL + GET_PRODUCT_ENDPOINT + "&productId=" + productId;
+        String urlWithParams = BASE_URL + GET_PRODUCT_ENDPOINT + "?productId=" + productId;
 
         Request request = new Request.Builder()
                 .url(urlWithParams)
@@ -204,11 +204,11 @@ public class ProductAPI {
     }
 
     private static void deleteProductCall(long productId) throws IOException {
-        RequestBody requestBody = RequestBody.create(gson.toJson(productId), JSON);
+        String urlWithParams = BASE_URL + DELETE_PRODUCT_ENDPOINT + "?productId=" + productId;
 
         Request request = new Request.Builder()
-                .url(BASE_URL + DELETE_PRODUCT_ENDPOINT)
-                .delete(requestBody)
+                .url(urlWithParams)
+                .delete()
                 .build();
 
         try (Response response = CLIENT.newCall(request).execute()) {
