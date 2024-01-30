@@ -9,7 +9,7 @@ app = Flask(__name__)
 connection = pymysql.connect(
     host='127.0.0.1',
     user='root',
-    password='1q2w3e',
+    password='@Nk22bdpizznthw50',
     database='android_app'
 )
 
@@ -113,7 +113,8 @@ def create_storage_space():
 
     data = request.get_json()
     userId=data.get('userId')
-    name = data.get('name')
+    container = data.get('container')
+    name = container.get('name')
     
     with connection.cursor() as cursor:
         sql = "INSERT INTO storage_space (storage_name,user_id) VALUES (%s,%s)"
