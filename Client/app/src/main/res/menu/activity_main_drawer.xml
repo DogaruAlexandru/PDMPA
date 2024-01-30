@@ -16,5 +16,9 @@
             android:id="@+id/nav_containers"
             android:icon="@drawable/ic_menu_container_fill"
             android:title="@string/menu_containers" />
+        <item
+            android:id="@+id/nav_recipes"
+            android:icon="@drawable/stew_1_svgrepo_com"
+            android:title="@string/menu_recipes" />
     </group>
 </menu>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:layout_marginLeft="10dp"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="30dp"
+        android:id="@+id/recipeitemname"
+        tools:text="Recipe Title"/>
+
+    <TextView
+        android:id="@+id/recipeingredient1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/recipeitemname"
+        android:layout_marginLeft="40dp"
+        android:textSize="20dp"
+        tools:text="Ingredient #1" />
+
+    <TextView
+        android:id="@+id/recipeingredient2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/recipeingredient1"
+        android:layout_marginLeft="40dp"
+        android:textSize="20dp"
+        tools:text="Ingredient #2" />
+
+    <TextView
+        android:id="@+id/recipeingredient3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/recipeingredient2"
+        android:layout_marginLeft="40dp"
+        android:textSize="20dp"
+        tools:text="Ingredient #3" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/purple_500"
+        android:layout_below="@id/recipeingredient3"
+        android:layout_marginTop="10dp"/>
+
+</RelativeLayout>
