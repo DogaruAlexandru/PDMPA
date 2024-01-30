@@ -14,6 +14,9 @@ import com.example.client.data.LoginRepository;
 import com.example.client.ui.login.LoginActivity;
 import com.example.client.ui.containers.container.ContainerActivity;
 import com.example.client.ui.produces.produce.ProduceActivity;
+import com.example.client.ui.containers.container.ContainerActivity;
+import com.example.client.ui.produces.produce.ProduceActivity;
+import com.example.client.ui.recipes.recipe.RecipeActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
@@ -57,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_produces, R.id.nav_containers)
+                R.id.nav_home, R.id.nav_produces, R.id.nav_containers, R.id.nav_recipes)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
@@ -88,6 +91,12 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("type", "add");
             startActivity(intent);
         });
+
+        binding.appBarMain.fabRecipes.setOnClickListener(view -> {
+            Intent intent = new Intent(this, RecipeActivity.class);
+            intent.putExtra("type", "add");
+            startActivity(intent);
+        });
     }
 
     private void setAnimation() {
@@ -95,11 +104,13 @@ public class MainActivity extends AppCompatActivity {
             binding.appBarMain.fabProduct.startAnimation(fromBottom);
             binding.appBarMain.fabReceipt.startAnimation(fromBottom);
             binding.appBarMain.fabContainer.startAnimation(fromBottom);
+            binding.appBarMain.fabRecipes.startAnimation(fromBottom);
             binding.appBarMain.fab.startAnimation(rotateClose);
         } else {
             binding.appBarMain.fabProduct.startAnimation(toBottom);
             binding.appBarMain.fabReceipt.startAnimation(toBottom);
             binding.appBarMain.fabContainer.startAnimation(toBottom);
+            binding.appBarMain.fabRecipes.startAnimation(toBottom);
             binding.appBarMain.fab.startAnimation(rotateOpen);
         }
     }
@@ -109,10 +120,12 @@ public class MainActivity extends AppCompatActivity {
             binding.appBarMain.fabProduct.setVisibility(View.VISIBLE);
             binding.appBarMain.fabReceipt.setVisibility(View.VISIBLE);
             binding.appBarMain.fabContainer.setVisibility(View.VISIBLE);
+            binding.appBarMain.fabRecipes.setVisibility(View.VISIBLE);
         } else {
             binding.appBarMain.fabProduct.setVisibility(View.INVISIBLE);
             binding.appBarMain.fabReceipt.setVisibility(View.INVISIBLE);
             binding.appBarMain.fabContainer.setVisibility(View.INVISIBLE);
+            binding.appBarMain.fabRecipes.setVisibility(View.INVISIBLE);
         }
     }
 

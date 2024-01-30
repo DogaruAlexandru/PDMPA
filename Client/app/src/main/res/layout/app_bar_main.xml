@@ -65,5 +65,16 @@
         android:visibility="invisible"
         app:srcCompat="@drawable/ic_menu_container_stroke" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_recipes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_marginBottom="305dp"
+        android:focusable="true"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/stew_1_svgrepo_com" />
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

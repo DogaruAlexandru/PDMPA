@@ -431,6 +431,190 @@ def update_product():
         
         return jsonify({'message': 'Product updated successfully'})
 
+# Enpoint to retreive products AND their container from a specific user
+@app.route('/productAndContainer/all_from_user', methods=['GET'])
+def get_products_with_containers_list():
+    try:
+        request.get_json()
+    except Exception:
+        return jsonify({'error': "Wrong input type. Needed request body format: { \"user_id\":<value>}"})
+
+    data = request.get_json()
+    user_id = data.get('user_id')
+
+    if user_id is None:
+        return jsonify({'error': "Wrong input type. Need for user_id"})
+
+    with connection.cursor() as cursor:
+        sql = "SELECT * FROM product join storage_space on product.container_id = storage_space.storage_id WHERE user_id = %s"
+        cursor.execute(sql, user_id)
+        return jsonify(cursor.fetchall())
+
+
+# Endpoint to handle CRUD operations for recipes
+@app.route('/recipe', methods=['GET', 'POST', 'PUT', 'DELETE'])
+def handle_recipes():
+    if request.method == 'GET':
+        recipe_id = request.args.get('recipe_id')
+
+        if not recipe_id:
+            return jsonify({'error': 'Missing recipe_id parameter'})
+
+        with connection.cursor() as cursor:
+            sql = "SELECT recipe_name, ingredients, recipe_description FROM recipe WHERE recipe_id = %s"
+            cursor.execute(sql, (recipe_id,))
+            recipe_data = cursor.fetchone()
+
+            if not recipe_data:
+                return jsonify({'message': 'Recipe not found'})
+
+            return jsonify(recipe_data)
+
+    elif request.method == 'POST':
+        try:
+            request.get_json()
+        except Exception:
+            return jsonify({'error': "Wrong input type"})
+
+        data = request.get_json()
+        recipe_name = data.get('recipe_name')
+        ingredients = data.get('ingredients')
+        recipe_description = data.get('recipe_description')
+
+        with connection.cursor() as cursor:
+            sql = "INSERT INTO recipe (recipe_name, ingredients, recipe_description) VALUES (%s, %s, %s)"
+            cursor.execute(sql, (recipe_name, ingredients, recipe_description))
+            connection.commit()
+        return jsonify({'message': 'Recipe created successfully'})
+
+    elif request.method == 'PUT':
+        data = request.get_json()
+        recipe_id = data.get('recipe_id')
+        recipe_name = data.get('recipe_name')
+        ingredients = data.get('ingredients')
+        recipe_description = data.get('recipe_description')
+
+        with connection.cursor() as cursor:
+            sql = "UPDATE recipe SET recipe_name = %s, ingredients = %s, recipe_description = %s WHERE recipe_id = %s"
+            cursor.execute(sql, (recipe_name, ingredients,
+                           recipe_description, recipe_id))
+            connection.commit()
+        return jsonify({'message': 'Recipe updated successfully'})
+
+    elif request.method == 'DELETE':
+        data = request.get_json()
+        recipe_id = data.get('recipe_id')
+
+        with connection.cursor() as cursor:
+            sql = "DELETE FROM recipe WHERE recipe_id = %s"
+            cursor.execute(sql, (recipe_id,))
+            connection.commit()
+        return jsonify({'message': 'Recipe deleted successfully'})
+
+    else:
+        return jsonify({'message': 'Method not allowed'})
+
+
+# Endpoint for CRUD operations on the user_recipe table
+@app.route('/user_recipe', methods=['GET', 'POST', 'PUT', 'DELETE'])
+def user_recipes():
+    if request.method == 'GET':
+        user_id = request.args.get('user_id')
+
+        if not user_id:
+            return jsonify({'error': 'Missing user_id parameter'})
+
+        with connection.cursor() as cursor:
+            sql = "SELECT recipe_id FROM user_recipe WHERE user_id = %s"
+            cursor.execute(sql, (user_id,))
+            user_recipes_data = cursor.fetchall()
+
+            if not user_recipes_data:
+                return jsonify({'message': 'User recipes not found'})
+
+            return jsonify(user_recipes_data)
+
+    elif request.method == 'POST':
+        data = request.get_json()
+        user_id = data['user_id']
+        recipe_id = data['recipe_id']
+        with connection.cursor() as cursor:
+            sql = "INSERT INTO user_recipe (user_id, recipe_id) VALUES (%s, %s)"
+            cursor.execute(sql, (user_id, recipe_id))
+            connection.commit()
+        return jsonify({'message': 'User recipe created successfully'})
+
+    elif request.method == 'PUT':
+        data = request.get_json()
+        user_recipe_id = data['user_recipe_id']
+        user_id = data['user_id']
+        recipe_id = data['recipe_id']
+        with connection.cursor() as cursor:
+            sql = "UPDATE user_recipe SET user_id = %s, recipe_id = %s WHERE user_recipe_id = %s"
+            cursor.execute(sql, (user_id, recipe_id, user_recipe_id))
+            connection.commit()
+        return jsonify({'message': 'User recipe updated successfully'})
+
+    elif request.method == 'DELETE':
+        data = request.get_json()
+        user_recipe_id = data['user_recipe_id']
+        with connection.cursor() as cursor:
+            sql = "DELETE FROM user_recipe WHERE user_recipe_id = %s"
+            cursor.execute(sql, (user_recipe_id,))
+            connection.commit()
+        return jsonify({'message': 'User recipe deleted successfully'})
+
+    else:
+        return jsonify({'message': 'Method not allowed'})
+
+
+# Endpoint for CRUD operations on the product_info table
+@app.route('/product_info', methods=['GET', 'POST', 'PUT', 'DELETE'])
+def product_info():
+    if request.method == 'GET':
+        product_id = request.args.get('product_id')
+
+        if not product_id:
+            return jsonify({'error': 'Missing product_id parameter'})
+
+        with connection.cursor() as cursor:
+            sql = "SELECT product_name, energy_value, fat_value, carbohydrate_value, sodium, calcium, protein, vitamin, vitamin_type, allergens FROM product_info WHERE product_id = %s"
+            cursor.execute(sql, (product_id,))
+            product_data = cursor.fetchone()
+
+            if not product_data:
+                return jsonify({'message': 'Product not found'})
+
+            return jsonify(product_data)
+
+    elif request.method == 'POST':
+        data = request.get_json()
+        with connection.cursor() as cursor:
+            sql = "INSERT INTO product_info (product_name, energy_value, fat_value, carbohydrate_value, sodium, calcium, protein, vitamin, vitamin_type, allergens) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            cursor.execute(sql, (data['product_name'], data['energy_value'], data['fat_value'], data['carbohydrate_value'],
+                           data['sodium'], data['calcium'], data['protein'], data['vitamin'], data['vitamin_type'], data['allergens']))
+            connection.commit()
+        return jsonify({'message': 'Product added successfully'})
+
+    elif request.method == 'PUT':
+        data = request.get_json()
+        with connection.cursor() as cursor:
+            sql = "UPDATE product_info SET product_name=%s, energy_value=%s, fat_value=%s, carbohydrate_value=%s, sodium=%s, calcium=%s, protein=%s, vitamin=%s, vitamin_type=%s, allergens=%s WHERE product_id=%s"
+            cursor.execute(sql, (data['product_name'], data['energy_value'], data['fat_value'], data['carbohydrate_value'], data['sodium'],
+                           data['calcium'], data['protein'], data['vitamin'], data['vitamin_type'], data['allergens'], data['product_id']))
+            connection.commit()
+        return jsonify({'message': 'Product updated successfully'})
+
+    elif request.method == 'DELETE':
+        data = request.get_json()
+        with connection.cursor() as cursor:
+            sql = "DELETE FROM product_info WHERE product_id=%s"
+            cursor.execute(sql, (data['product_id'],))
+            connection.commit()
+        return jsonify({'message': 'Product deleted successfully'})
+    else:
+        return jsonify({'message': 'Method not allowed'})
+
 
 @app.route('/get_product', methods=['GET'])
 def get_product_info():
