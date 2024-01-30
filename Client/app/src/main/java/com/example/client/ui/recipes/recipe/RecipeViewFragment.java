@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,6 +35,7 @@ public class RecipeViewFragment extends Fragment {
         recipeId = getArguments().getLong("recipe_id", -1);
         recipeViewModel.setRecipeId(recipeId);
 
+        setButtonsAction(rootView);
         setValues(rootView);
         return rootView;
     }
@@ -41,6 +44,17 @@ public class RecipeViewFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         recipeViewModel = new ViewModelProvider(this).get(RecipeViewModel.class);
+    }
+
+    private void setButtonsAction(View rootView) {
+        Button btnEdit = rootView.findViewById(R.id.recipe_edit_button);
+        Button btnDelete = rootView.findViewById(R.id.recipe_delete_button);
+
+        btnDelete.setOnClickListener(view -> {
+            recipeViewModel.deleteRecipe(recipeId);
+            Toast.makeText(getActivity(), getResources().getString(R.string.recipe_deleted), Toast.LENGTH_LONG).show();
+            requireActivity().getOnBackPressedDispatcher().onBackPressed();
+        });
     }
 
     private void setValues(View rootView) {

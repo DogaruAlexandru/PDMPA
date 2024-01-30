@@ -20,7 +20,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/recipe_title"
-        tools:hint="@string/recipe_name"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:id="@+id/recipe_title_edit">
@@ -30,7 +29,8 @@
             android:layout_height="wrap_content"
             android:inputType="text"
             android:maxLength="255"
-            android:textSize="20dp"/>
+            android:textSize="20dp"
+            android:hint="@string/recipe_name"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
@@ -48,7 +48,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/recipe_ingredients_title"
-        tools:hint="Ingredient; List; Goes; Here; Like; This"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:id="@+id/recipe_ingredients_list">
@@ -58,7 +57,8 @@
             android:layout_height="wrap_content"
             android:inputType="text"
             android:maxLength="255"
-            android:textSize="20dp"/>
+            android:textSize="20dp"
+            android:hint="Ingredient; List; Goes; Here; Like; This"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView

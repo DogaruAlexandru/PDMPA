@@ -92,4 +92,7 @@
     <string name="recipe_delete_button">Delete</string>
     <string name="recipe_name">Recipe name</string>
     <string name="recipe_add_button">Add</string>
+    <string name="recipe_success">Recipe successfully added</string>
+    <string name="recipe_fail">All the fields must be populated.</string>
+    <string name="recipe_deleted">Recipe deleted.</string>
 </resources>
