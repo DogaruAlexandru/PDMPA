@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 import pymysql
 import ManagePassword
 from collections import OrderedDict
+import json 
 
 app = Flask(__name__)
 
@@ -286,8 +287,8 @@ def create_product():
         vitaminType = productFull.get('vitaminType')
         allergens = productFull.get('allergens')
 
-        vitaminType_str = ', '.join(vitaminType) if vitaminType else None
-        allergens_str = ', '.join(allergens) if allergens else None
+        vitaminType_str = json.dumps(vitaminType) if vitaminType else None
+        allergens_str = json.dumps(allergens) if allergens else None
 
         with connection.cursor() as cursor:
             # Insert into product_info table
@@ -311,7 +312,7 @@ def create_product():
         return jsonify({'message': 'Product created successfully'})
 
     except Exception as e:
-        return jsonify({'error': str(e)})
+        return jsonify({'error': str(e)}),400
 
 
 
