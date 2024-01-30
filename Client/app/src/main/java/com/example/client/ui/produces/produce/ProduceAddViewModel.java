@@ -3,41 +3,60 @@ package com.example.client.ui.produces.produce;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.client.data.api.ContainerAPI;
+import com.example.client.data.api.ProductAPI;
+import com.example.client.data.model.Container;
 import com.example.client.data.model.ProductFull;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ProduceAddViewModel extends ViewModel {
-    private ArrayList<String> containerNames;
+    private List<String> containerNames;
     private MutableLiveData<ArrayList<String>> containerNamesMutableLiveData;
+    private long userId;
 
     private ProduceAddViewModel() {
-        setProduct();
     }
 
-    private void setProduct() {
+    public void setProduct() {
         getFromDB();
 
         containerNamesMutableLiveData = new MutableLiveData<>();
-        containerNamesMutableLiveData.setValue(containerNames);
+        containerNamesMutableLiveData.setValue((ArrayList<String>) containerNames);
     }
 
     private void getFromDB() {
-        //todo get from db or saved db on device
-
         getContainers();
     }
 
-    private void getContainers(){
-        containerNames = new ArrayList<>(Arrays.asList("Fridge", "Pantry", "Cellar"));
+    private void getContainers() {
+        try {
+            containerNames = ContainerAPI.getContainers(userId).stream()
+                    .map(Container::name)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+//        containerNames = new ArrayList<>(Arrays.asList("Fridge", "Pantry", "Cellar"));
+    }
+
+    public void addProduct(ProductFull addValues) {
+        try {
+            ProductAPI.createProduct(new ProductAPI.UserIdProductFull(userId, addValues));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     public MutableLiveData<ArrayList<String>> getContainerNamesMutableLiveData() {
         return containerNamesMutableLiveData;
-    }
-
-    public void addProduct(ProductFull addValues) {
-        //todo write the product in db
     }
 }

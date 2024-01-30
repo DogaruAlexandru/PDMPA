@@ -16,7 +16,6 @@
             android:hint="@string/product_name">
 
             <com.google.android.material.textfield.TextInputEditText
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:importantForAutofill="no"
@@ -91,7 +90,6 @@
             android:hint="@string/energy_value">
 
             <com.google.android.material.textfield.TextInputEditText
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:importantForAutofill="no"
@@ -108,7 +106,6 @@
             android:hint="@string/fat_value">
 
             <com.google.android.material.textfield.TextInputEditText
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:importantForAutofill="no"
@@ -125,7 +122,6 @@
             android:hint="@string/carbohydrate_value">
 
             <com.google.android.material.textfield.TextInputEditText
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:importantForAutofill="no"
@@ -142,7 +138,6 @@
             android:hint="@string/sodium">
 
             <com.google.android.material.textfield.TextInputEditText
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:importantForAutofill="no"
@@ -159,7 +154,6 @@
             android:hint="@string/calcium">
 
             <com.google.android.material.textfield.TextInputEditText
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:importantForAutofill="no"
@@ -176,7 +170,6 @@
             android:hint="@string/protein">
 
             <com.google.android.material.textfield.TextInputEditText
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:importantForAutofill="no"
@@ -193,7 +186,6 @@
             android:hint="@string/vitamin">
 
             <com.google.android.material.textfield.TextInputEditText
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:importantForAutofill="no"
@@ -210,7 +202,6 @@
             android:hint="@string/vitamin_type">
 
             <com.google.android.material.textfield.TextInputEditText
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:importantForAutofill="no"
@@ -227,7 +218,6 @@
             android:hint="@string/allergens">
 
             <com.google.android.material.textfield.TextInputEditText
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:importantForAutofill="no"

@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12761f1d-1f36-4532-b147-4ca434b31d90" name="Changes" comment="" />
+    <list default="true" id="12761f1d-1f36-4532-b147-4ca434b31d90" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../Client/app/src/main/java/com/example/client/data/api/ContainerAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Client/app/src/main/java/com/example/client/data/api/ContainerAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client/app/src/main/java/com/example/client/data/api/ProductAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Client/app/src/main/java/com/example/client/data/api/ProductAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CreateServer.py" beforeDir="false" afterPath="$PROJECT_DIR$/CreateServer.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -16,6 +20,9 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 1
+}]]></component>
   <component name="ProjectId" id="2XiNiC0oQQfAs6wq4ieqv5kcTkZ" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -24,7 +31,12 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "git-widget-placeholder": "main"
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "Merging login",
+    "kotlin-language-version-configured": "true",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RunManager">
@@ -58,7 +70,11 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1699108064683</updated>
+      <workItem from="1706625330599" duration="35000" />
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
 </project>

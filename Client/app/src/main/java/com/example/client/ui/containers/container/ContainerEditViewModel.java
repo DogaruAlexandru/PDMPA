@@ -3,7 +3,10 @@ package com.example.client.ui.containers.container;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.client.data.api.ContainerAPI;
 import com.example.client.data.model.Container;
+
+import java.io.IOException;
 
 public class ContainerEditViewModel extends ViewModel {
     private long containerId;
@@ -11,10 +14,9 @@ public class ContainerEditViewModel extends ViewModel {
     private MutableLiveData<Container> containerMutableLiveData;
 
     private ContainerEditViewModel() {
-        setContainer();
     }
 
-    private void setContainer() {
+    public void setData() {
         getFromDB();
 
         containerMutableLiveData = new MutableLiveData<>();
@@ -22,16 +24,20 @@ public class ContainerEditViewModel extends ViewModel {
     }
 
     private void getFromDB() {
-        //todo get from db or saved db on device
-
         getContainerInfo();
     }
 
     private void getContainerInfo() {
-        container = new Container(
-                5L,
-                "Mock Container"
-        );
+        try {
+            container = ContainerAPI.getContainer(containerId);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+//        container = new Container(
+//                5L,
+//                "Mock Container"
+//        );
     }
 
     public void setContainerId(long containerId) {
@@ -43,10 +49,18 @@ public class ContainerEditViewModel extends ViewModel {
     }
 
     public void updateContainer(Container editedValues) {
-        //todo look the difference between old and new container and see differences and send them to be modified
+        try {
+            ContainerAPI.updateContainer(editedValues);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void deleteContainer() {
-        //todo delete container with id container id
+        try {
+            ContainerAPI.deleteContainer(containerId);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

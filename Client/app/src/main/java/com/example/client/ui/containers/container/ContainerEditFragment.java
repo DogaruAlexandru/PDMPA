@@ -1,5 +1,7 @@
 package com.example.client.ui.containers.container;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +32,11 @@ public class ContainerEditFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(ContainerEditViewModel.class);
+
+        assert getArguments() != null;
+        containerId = getArguments().getLong("containerId", -1);
+        mViewModel.setContainerId(containerId);
+        mViewModel.setData();
     }
 
     @Nullable
@@ -37,10 +44,6 @@ public class ContainerEditFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_container_edit, container, false);
-
-        assert getArguments() != null;
-        containerId = getArguments().getLong("containerId", -1);
-        mViewModel.setContainerId(containerId);
 
         setButtonsAction(rootView);
 

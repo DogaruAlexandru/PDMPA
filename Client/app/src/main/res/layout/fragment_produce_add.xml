@@ -8,6 +8,7 @@
     android:padding="16dp"
     tools:context=".ui.produces.produce.ProduceAddFragment">
 
+    <!-- Add Button -->
     <Button
         android:id="@+id/btnAdd"
         android:layout_width="wrap_content"

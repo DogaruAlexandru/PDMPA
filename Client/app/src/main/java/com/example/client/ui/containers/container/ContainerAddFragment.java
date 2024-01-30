@@ -1,5 +1,7 @@
 package com.example.client.ui.containers.container;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +31,7 @@ public class ContainerAddFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(ContainerAddViewModel.class);
+        mViewModel.setUserId(getUserId());
     }
 
     @Override
@@ -55,6 +58,11 @@ public class ContainerAddFragment extends Fragment {
         btnBack.setOnClickListener(view -> {
             requireActivity().getOnBackPressedDispatcher().onBackPressed();
         });
+    }
+
+    private long getUserId() {
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("user", Context.MODE_PRIVATE);
+        return sharedPreferences.getLong("userId", -1);
     }
 
     private boolean validateContainerName(View rootView) {
