@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request
 import pymysql
 import ManagePassword
+from collections import OrderedDict
 
 app = Flask(__name__)
 
@@ -8,7 +9,7 @@ app = Flask(__name__)
 connection = pymysql.connect(
     host='127.0.0.1',
     user='root',
-    password='1q2w3e',
+    password='@Nk22bdpizznthw50',
     database='android_app'
 )
 
@@ -111,33 +112,27 @@ def create_storage_space():
         return jsonify({'error': "Wrong input type. If you don't want to add a request body, sent {} as body"})
 
     data = request.get_json()
-    user_id=data.get('user_id')
-    storage_name = data.get('storage_name')
+    userId=data.get('userId')
+    name = data.get('name')
     
     with connection.cursor() as cursor:
         sql = "INSERT INTO storage_space (storage_name,user_id) VALUES (%s,%s)"
-        cursor.execute(sql, (storage_name,user_id))
+        cursor.execute(sql, (name,userId))
         connection.commit()
     return jsonify({'message': 'Storage space created successfully'})
 
 
 @app.route('/user_containers', methods=['GET'])
 def get_user_storage_space():
-    '''try:
-        request.get_json()
-    except Exception:
-        return jsonify({'error': "Wrong input type. If you don't want to add a request body, sent {} as body"})
+    
+    userId = request.args.get('userId')
 
-    data = request.get_json()
-    user_id=data.get('user_id')'''
-    user_id = request.args.get('user_id')
-
-    if user_id is None:
+    if userId is None:
         return jsonify({'error': "Missing user_id parameter."}), 400
     
     with connection.cursor() as cursor:
-        sql = "SELECT storage_name FROM storage_space WHERE user_id= %s"
-        cursor.execute(sql, user_id)
+        sql = "SELECT storage_id, storage_name FROM storage_space WHERE user_id= %s"
+        cursor.execute(sql, userId)
         connection.commit()
     return jsonify(cursor.fetchall())
 
@@ -148,34 +143,32 @@ def storage_space_update():
     except Exception:
         return jsonify({'error': "Wrong input type. If you don't want to add a request body, sent {} as body"})
 
-    data = request.get_json()
-    container_id=data.get('storage_id')
-    storage_name = data.get('storage_name')
-    
-    with connection.cursor() as cursor:
-        sql = "UPDATE storage_space SET storage_name=%s WHERE storage_id = %s"
-        cursor.execute(sql, (storage_name,container_id))
-        connection.commit()
-    return jsonify({'message': 'Storage space updated successfully'})
+    try:
+        data = request.get_json()
+        id = data.get('id')
+        name = data.get('name')
+        
+        with connection.cursor() as cursor:
+            sql = "UPDATE storage_space SET storage_name=%s WHERE storage_id = %s"
+            cursor.execute(sql, (name, id))
+            connection.commit()
+            
+        return jsonify({'message': 'Storage space updated successfully'})
+    except Exception as e:
+        return jsonify({'error': str(e)})
 
 @app.route('/get_container', methods=['GET'])
 def get_storage_space():
-    '''try:
-        request.get_json()
-    except Exception:
-        return jsonify({'error': "Wrong input type. If you don't want to add a request body, sent {} as body"})
 
-    data = request.get_json()
-    container_id=data.get('storage_id')'''
     
-    storage_id = request.args.get('storage_id')
+    containerId = request.args.get('containerId')
 
-    if storage_id is None:
+    if containerId is None:
         return jsonify({'error': "Missing storage_id parameter."}), 400
     
     with connection.cursor() as cursor:
-        sql = "SELECT storage_name FROM storage_space WHERE storage_id= %s"
-        cursor.execute(sql, storage_id)
+        sql = "SELECT storage_id, storage_name FROM storage_space WHERE storage_id= %s"
+        cursor.execute(sql, containerId)
         connection.commit()
         
     return jsonify(cursor.fetchall())
@@ -187,18 +180,22 @@ def delete_storage_space():
     except Exception:
         return jsonify({'error': "Wrong input type. If you don't want to add a request body, sent {} as body"})
 
-    data = request.get_json()
-    container_id=data.get('storage_id')
-    
-    with connection.cursor() as cursor:
-        sql_product = "DELETE FROM product WHERE container_id = %s"
-        cursor.execute(sql_product, (container_id,))
-        connection.commit()
+    try:
+        data = request.get_json()
+        containerId=data.get('containerId')
+        
+        with connection.cursor() as cursor:
+            sql_product = "DELETE FROM product WHERE container_id = %s"
+            cursor.execute(sql_product, (containerId,))
+            connection.commit()
 
-        sql_storage_space = "DELETE FROM storage_space WHERE storage_id = %s"
-        cursor.execute(sql_storage_space, (container_id,))
-        connection.commit()
-    return jsonify({'message': 'Storage deleted successfully'})
+            sql_storage_space = "DELETE FROM storage_space WHERE storage_id = %s"
+            cursor.execute(sql_storage_space, (containerId,))
+            connection.commit()
+            
+        return jsonify({'message': 'Storage deleted successfully'})
+    except Exception as e:
+        return jsonify({'error': str(e)})
 
 # Enpoint for creating a new product
 @app.route('/create_product', methods=['POST'])
@@ -210,41 +207,42 @@ def create_product():
 
     data = request.get_json()
 
-    user_id = data.get('user_id')
-    container_name = data.get('storage_name')
-    product_name = data.get('product_name')
-    expiration_date = data.get('expiration_date')
-    quantity_grams = data.get('quantity_grams')
-    date_added = data.get('date_added')
+    userId = data.get('userId')
+    productContainer = data.get('productContainer')
+    productName = data.get('productName')
+    expirationDate = data.get('expirationDate')
+    quantity = data.get('quantity')
+    addedDate = data.get('addedDate')
 
-    energy_value = data.get('energy_value')
-    fat_value = data.get('fat_value')
-    carbohydrate_value = data.get('carbohydrate_value')
+    energyValue = data.get('energyValue')
+    fatValue = data.get('fatValue')
+    carbohydrateValue = data.get('carbohydrateValue')
     sodium = data.get('sodium')
     calcium = data.get('calcium')
     protein = data.get('protein')
     vitamin = data.get('vitamin')
-    vitamin_type = data.get('vitamin_type')
+    vitaminType = data.get('vitaminType')
+    vitaminType_str = ', '.join(vitaminType) if vitaminType else None
     allergens = data.get('allergens')
     allergens_str = ', '.join(allergens) if allergens else None
     # print(type(user_id),type(container_id), type(product_name),type(expiration_date),type(quantity_grams),type(date_added),type(product_info_id))
     with connection.cursor() as cursor:
         sql = "INSERT INTO product_info (product_name,energy_value,fat_value,carbohydrate_value,sodium,calcium,protein,vitamin,vitamin_type,allergens) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-        cursor.execute(sql, (product_name, energy_value, fat_value, carbohydrate_value,
-                       sodium, calcium, protein, vitamin, vitamin_type, allergens_str))
+        cursor.execute(sql, (productName, energyValue, fatValue, carbohydrateValue,
+                       sodium, calcium, protein, vitamin, vitaminType_str, allergens_str))
         connection.commit()
         # Obținerea product_info_id-ului generat
         product_info_id = cursor.lastrowid
 
         # Obținerea container_id-ului bazat pe container_name
         sql_container = "SELECT storage_id FROM storage_space WHERE storage_name = %s"
-        cursor.execute(sql_container, (container_name,))
+        cursor.execute(sql_container, (productContainer,))
         container_data = cursor.fetchone()
         container_id = container_data[0] if container_data else None
 
         sql = "INSERT INTO product (user_id,container_id,product_name,expiration_date,quantity_grams,date_added, product_info_id) VALUES (%s,%s,%s,%s,%s,%s,%s)"
-        cursor.execute(sql, (user_id, container_id, product_name,
-                       expiration_date, quantity_grams, date_added, product_info_id))
+        cursor.execute(sql, (userId, container_id, productName,
+                       expirationDate, quantity, addedDate, product_info_id))
         connection.commit()
     return jsonify({'message': 'Product created successfully'})
 
@@ -252,26 +250,17 @@ def create_product():
 # Enpoint to retreive products from a specific user
 @app.route('/user_products', methods=['GET'])
 def get_products_list():
-    '''try:
-        request.get_json()
-    except Exception:
-        return jsonify({'error': "Wrong input type."})
 
-    data = request.get_json()
-    user_id = data.get('user_id')
+    userId = request.args.get('userId')
 
-    if user_id is None:
-        return jsonify({'error': "Wrong input type. Need for user_id"})'''
-    user_id = request.args.get('user_id')
-
-    if user_id is None:
+    if userId is None:
         return jsonify({'error': "Missing user_id parameter."}), 400
 
     products = []
 
     with connection.cursor() as cursor:
         sql = "SELECT p.container_id, p.product_name, p.expiration_date, p.quantity_grams, p.date_added, p.product_info_id FROM product p WHERE p.user_id = %s"
-        cursor.execute(sql, (user_id,))
+        cursor.execute(sql, (userId,))
         product_data = cursor.fetchall()
 
         for row in product_data:
@@ -285,13 +274,18 @@ def get_products_list():
                 # Tratarea cazului în care nu există nicio înregistrare găsită
                 container_name = None  # sau un alt comportament adecvat în funcție de cerințele aplicației
 
-            product = {
-                "id": product_info_id,
-                "name": product_name,
-                "expiration_date": expiration_date,
-                "quantity": quantity_grams,
-                "container": container_name
-            }
+            product = OrderedDict([
+                ("productId", product_info_id),
+                ("productName", product_name),
+                ("productContainer", container_name),
+                ("expirationDate", expiration_date),
+                ("quantity", quantity_grams),
+                ("addedDate", date_added)
+               
+            ])
+
+           
+
 
             products.append(product)
     return jsonify(products)
@@ -309,22 +303,47 @@ def update_product():
 
     data = request.get_json()
     
-    product_info_id = data.get('product_id')
-    product_name=data.get('product_name')
-    energy_value = data.get('energy_value')
-    fat_value = data.get('fat_value')
-    carbohydrate_value = data.get('carbohydrate_value')
+    productId=data.get('productId')
+    productContainer = data.get('productContainer')
+    productName = data.get('productName')
+    expirationDate = data.get('expirationDate')
+    quantity = data.get('quantity')
+    addedDate = data.get('addedDate')
+
+    energyValue = data.get('energyValue')
+    fatValue = data.get('fatValue')
+    carbohydrateValue = data.get('carbohydrateValue')
     sodium = data.get('sodium')
     calcium = data.get('calcium')
     protein = data.get('protein')
     vitamin = data.get('vitamin')
-    vitamin_type = data.get('vitamin_type')
+    vitaminType = data.get('vitaminType')
+    vitaminType_str = ', '.join(vitaminType) if vitaminType else None
     allergens = data.get('allergens')
     allergens_str = ', '.join(allergens) if allergens else None
 
     with connection.cursor() as cursor:
-        sql = "UPDATE product_info SET product_name =%s, energy_value = %s, fat_value = %s, carbohydrate_value = %s ,sodium =%s ,calcium=%s , protein =%s, vitamin=%s , vitamin_type = %s , allergens =%s WHERE product_id = %s"
-        cursor.execute(sql, (product_name,energy_value,fat_value,carbohydrate_value,sodium,calcium,protein,vitamin,vitamin_type,allergens_str,product_info_id))
+        sql = "SELECT storage_id FROM storage_space WHERE storage_name= %s"
+        cursor.execute(sql, (productContainer))
+        container_data = cursor.fetchone()
+        if container_data:
+            container_id = container_data[0]
+        else:
+            # Tratarea cazului în care nu există nicio înregistrare găsită
+            container_id = None
+        
+        sql_product = "UPDATE product SET container_id =%s, product_name = %s, expiration_date = %s, quantity_grams = %s ,date_added =%s  WHERE product_id = %s"
+        cursor.execute(sql_product, (container_id, productName,expirationDate,quantity,addedDate,productId))
+        connection.commit()
+        
+        sql_product_info_id = "SELECT product_info_id FROM product WHERE product_id = %s"
+        cursor.execute(sql_product_info_id, (productId))
+        product_info_id=cursor.fetchall()
+        
+        
+        
+        sql_product_info = "UPDATE product_info SET product_name =%s, energy_value = %s, fat_value = %s, carbohydrate_value = %s ,sodium =%s ,calcium=%s , protein =%s, vitamin=%s , vitamin_type = %s , allergens =%s WHERE product_id = %s"
+        cursor.execute(sql_product_info, (productName,energyValue,fatValue,carbohydrateValue,sodium,calcium,protein,vitamin,vitaminType_str,allergens_str,product_info_id))
         connection.commit()
         
         return jsonify({'message': 'Product updated successfully'})
@@ -333,26 +352,59 @@ def update_product():
 
 @app.route('/get_product', methods=['GET'])
 def get_product_info():
-    ''' try:
-        request.get_json()
-    except Exception:
-        return jsonify({'error': "Wrong input type. Needed request body format: { \"user_id\":<value>}"})
-
-    data = request.get_json()
-    
-    product_info_id = data.get('product_id')'''
-    
-    product_info_id = request.args.get('product_info_id')
-
-    if product_info_id is None:
-        return jsonify({'error': "Missing product_info_id parameter."}), 400
    
+    
+    productId = request.args.get('productId')
+
+    
+
+    if productId is None:
+        return jsonify({'error': "Missing productId parameter."}), 400
+
+    products = []
+
     with connection.cursor() as cursor:
-        sql = "SELECT  product_name , energy_value , fat_value, carbohydrate_value  ,sodium  ,calcium , protein , vitamin , vitamin_type  , allergens FROM product_info WHERE product_id = %s"
-        cursor.execute(sql, (product_info_id))
-        connection.commit()
-        
-        return jsonify(cursor.fetchall())
+        sql = "SELECT p.container_id, p.product_name, p.expiration_date, p.quantity_grams, p.date_added, p.product_info_id FROM product p WHERE p.product_id = %s"
+        cursor.execute(sql, (productId,))
+        product_data = cursor.fetchall()
+
+        for row in product_data:
+            container_id, product_name, expiration_date, quantity_grams, date_added, product_info_id = row
+            sql = "SELECT storage_name FROM storage_space WHERE storage_id = %s"
+            cursor.execute(sql, (container_id,))
+            container_data = cursor.fetchone()
+            if container_data:
+                container_name = container_data[0]
+            else:
+                # Tratarea cazului în care nu există nicio înregistrare găsită
+                container_name = None  # sau un alt comportament adecvat în funcție de cerințele aplicației
+            
+            sql= "SELECT  energy_value , fat_value, carbohydrate_value  ,sodium  ,calcium , protein , vitamin , vitamin_type  , allergens  FROM product_info where product_id =%s"
+            cursor.execute(sql, (product_info_id,))
+            product_info = cursor.fetchone()
+
+            product = OrderedDict([
+                ("productId", product_info_id),
+                ("productName", product_name),
+                ("productContainer", container_name),
+                ("expirationDate", expiration_date),
+                ("quantity", quantity_grams),
+                ("addedDate", date_added),
+                ("energyValue", product_info[0]),
+                ("fatValue", product_info[1]),
+                ("carbohydrateValue", product_info[2]),
+                ("sodium", product_info[3]),
+                ("calcium", product_info[4]),
+                ("protein", product_info[5]),
+                ("vitamin", product_info[6]),
+                ("vitaminType", product_info[7]),
+                ("allergens", product_info[8])
+            ])
+
+           
+
+    return jsonify(product)
+
     
 @app.route('/delete_product', methods=['DELETE'])
 def get_products_with_containers_list():
@@ -363,21 +415,23 @@ def get_products_with_containers_list():
 
     data = request.get_json()
     
-    product_info_id = data.get('product_id')
+    productId = data.get('productId')
    
-
-    with connection.cursor() as cursor:
-        sql = "DELETE FROM product WHERE product_info_id = %s"
-        cursor.execute(sql, (product_info_id))
-        connection.commit()   
+    try:
+        with connection.cursor() as cursor:
+            sql = "DELETE FROM product WHERE product_id = %s"
+            cursor.execute(sql, (productId))
+            connection.commit()   
+            
+            sql = "DELETE FROM product_info WHERE product_id = %s"
+            cursor.execute(sql, (productId))
+            connection.commit()
+            
         
-        sql = "DELETE FROM product_info WHERE product_id = %s"
-        cursor.execute(sql, (product_info_id))
-        connection.commit()
-        
-       
-        
-        return jsonify({'message': 'deleted  successfully'})
+            
+            return jsonify({'message': 'deleted  successfully'})
+    except Exception as e:
+        return jsonify({'error': str(e)})    
 
 
 # Endpoint to handle CRUD operations for recipes
