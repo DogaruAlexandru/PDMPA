@@ -440,11 +440,11 @@ def get_product_info():
             sql = "SELECT p.container_id, p.product_name, p.expiration_date, p.quantity_grams, p.date_added, p.product_info_id FROM product p WHERE p.product_id = %s"
             cursor.execute(sql, (productId,))
             product_data = cursor.fetchone()  # Fetch only one row
-
+            print(product_data)
             if product_data:
                 container_id, product_name, expiration_date, quantity_grams, date_added, product_info_id = product_data
                 
-                sql = "SELECT storage_name FROM storage_space WHERE storage_id = %s"
+                sql = "SELECT storage_name FROM storage_space WHERE storage_id = %s "
                 cursor.execute(sql, (container_id,))
                 container_data = cursor.fetchone()
                 
@@ -458,8 +458,7 @@ def get_product_info():
                 product_info = cursor.fetchone()
 
                 if product_info:
-                    vitaminType = json.loads(product_info[7])
-                    allergens = json.loads(product_info[8])
+                   
                     # Construirea obiectului ProductFull
                     product_full = ProductFull(
                         productId,
@@ -475,8 +474,8 @@ def get_product_info():
                         product_info[4],
                         product_info[5],
                         product_info[6],
-                        vitaminType,
-                        allergens
+                        product_info[7],
+                        product_info[8]
                     )
 
                     return jsonify(product_full.__dict__)
