@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private Animation fromBottom;
     private Animation toBottom;
 
-    private boolean clicked = false;
+    private boolean clicked = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,13 +96,13 @@ public class MainActivity extends AppCompatActivity {
             binding.appBarMain.fabReceipt.startAnimation(fromBottom);
             binding.appBarMain.fabContainer.startAnimation(fromBottom);
             binding.appBarMain.fabRecipes.startAnimation(fromBottom);
-            binding.appBarMain.fab.startAnimation(rotateOpen);
+            binding.appBarMain.fab.startAnimation(rotateClose);
         } else {
             binding.appBarMain.fabProduct.startAnimation(toBottom);
             binding.appBarMain.fabReceipt.startAnimation(toBottom);
             binding.appBarMain.fabContainer.startAnimation(toBottom);
             binding.appBarMain.fabRecipes.startAnimation(toBottom);
-            binding.appBarMain.fab.startAnimation(rotateClose);
+            binding.appBarMain.fab.startAnimation(rotateOpen);
         }
     }
 

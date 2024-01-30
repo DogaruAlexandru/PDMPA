@@ -17,14 +17,17 @@ import com.example.client.MainActivity;
 import com.example.client.R;
 import com.example.client.data.model.Product;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 public class MyBackgroundService extends Service {
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
     private List<Product> data;
 
     @Override
@@ -97,8 +100,8 @@ public class MyBackgroundService extends Service {
 
     private long getValue() {
         return data.stream()
-                .map(Product::expirationDate)
-                .filter(expirationDate -> expirationDate.equals(new Date()))
+                .map(product -> dateFormat.format(product.expirationDate()))
+                .filter(formattedDate -> formattedDate.equals(dateFormat.format(new Date())))
                 .count();
     }
 
