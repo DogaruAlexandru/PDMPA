@@ -26,7 +26,9 @@ def verify_password(input_password, hashed_password, salt):
 
     try:
         # Verify the password by hashing the input password with the stored salt
-        hasher.verify(hashed_password, input_password + salt)
+        input_password_bytes = input_password.encode('utf-8')
+        salt_bytes = salt.encode('utf-8')
+        hasher.verify(hashed_password, input_password_bytes + salt_bytes)
         return True  # Passwords match
     except Exception:
         return False  # Passwords do not match

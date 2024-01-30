@@ -1,12 +1,19 @@
 package com.example.client;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+import com.example.client.data.LoginRepository;
+import com.example.client.ui.login.LoginActivity;
+import com.example.client.ui.containers.container.ContainerActivity;
+import com.example.client.ui.produces.produce.ProduceActivity;
 import com.example.client.ui.containers.container.ContainerActivity;
 import com.example.client.ui.produces.produce.ProduceActivity;
 import com.example.client.ui.recipes.recipe.RecipeActivity;
@@ -128,6 +135,50 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_settings) {
+            openSettings();
+            return true;
+        } else if (id == R.id.action_disconnect) {
+            disconnectUser();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void openSettings() {
+        //todo
+    }
+
+    private void disconnectUser() {
+        removeMemorizedUser();
+        goToLogin();
+    }
+
+    private void goToLogin() {
+        // Create an Intent to start the new activity
+        Intent intent = new Intent(this, LoginActivity.class);
+
+        // Start the new activity
+        startActivity(intent);
+
+        // Finish the current activity to close it
+        finish();
+    }
+
+    private void removeMemorizedUser() {
+        SharedPreferences sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove("userEmail");
+        editor.remove("userId");
+        editor.apply();
+    }
+
 
     @Override
     public boolean onSupportNavigateUp() {

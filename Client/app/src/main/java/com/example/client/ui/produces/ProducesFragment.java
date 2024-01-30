@@ -1,6 +1,8 @@
 package com.example.client.ui.produces;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +35,9 @@ public class ProducesFragment extends Fragment implements RecyclerViewInterface 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         producesViewModel = new ViewModelProvider(this).get(ProducesViewModel.class);
 
+        producesViewModel.setUserId(getUserId());
+        producesViewModel.setData();
+
         binding = FragmentProducesBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
@@ -45,6 +50,11 @@ public class ProducesFragment extends Fragment implements RecyclerViewInterface 
         spinnerValueChangeListener(binding.spinnerOrderSelector);
 
         return root;
+    }
+
+    private long getUserId() {
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("user", Context.MODE_PRIVATE);
+        return sharedPreferences.getLong("userId", -1);
     }
 
     private void spinnerValueChangeListener(Spinner spinner) {

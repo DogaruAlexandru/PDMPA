@@ -1,5 +1,11 @@
 package com.example.client.ui.produces.produce;
 
+import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
+
+import android.app.DatePickerDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.content.ContextCompat;
@@ -28,7 +34,6 @@ import android.widget.Spinner;
 import com.example.client.R;
 import com.example.client.data.model.ProductFull;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.mlkit.vision.barcode.BarcodeScanner;
 import com.google.mlkit.vision.barcode.BarcodeScanning;
 import com.google.mlkit.vision.barcode.common.Barcode;
@@ -74,20 +79,19 @@ public class ProduceAddFragment extends Fragment {
 
     private ProduceAddViewModel mViewModel;
 
-
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(ProduceAddViewModel.class);
+
+        mViewModel.setUserId(getUserId());
+        mViewModel.setProduct();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_produce_add, container, false);
-
-
 
         setButtonsAction(rootView);
         setProductContainerValues(rootView);
@@ -300,6 +304,11 @@ public class ProduceAddFragment extends Fragment {
         btnBack.setOnClickListener(view -> {
             requireActivity().getOnBackPressedDispatcher().onBackPressed();
         });
+    }
+
+    private long getUserId() {
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("user", Context.MODE_PRIVATE);
+        return sharedPreferences.getLong("userId", -1);
     }
 
     private boolean validValues(View rootView, ProductFull values) {

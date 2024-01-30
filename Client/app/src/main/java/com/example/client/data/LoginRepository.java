@@ -1,5 +1,7 @@
 package com.example.client.data;
 
+import android.util.Log;
+
 import com.example.client.data.model.LoggedInUser;
 
 /**
@@ -8,6 +10,7 @@ import com.example.client.data.model.LoggedInUser;
  */
 public class LoginRepository {
 
+    private static final String TAG = "Login";
     private static volatile LoginRepository instance;
 
     private LoginDataSource dataSource;
@@ -45,7 +48,17 @@ public class LoginRepository {
 
     public Result<LoggedInUser> login(String username, String password) {
         // handle login
+        Log.d(TAG, "Login metode in login repo was called " );
         Result<LoggedInUser> result = dataSource.login(username, password);
+        if (result instanceof Result.Success) {
+            setLoggedInUser(((Result.Success<LoggedInUser>) result).getData());
+        }
+        return result;
+    }
+
+    public Result<LoggedInUser> register(String username, String password) {
+        // handle register
+        Result<LoggedInUser> result = dataSource.register(username, password);
         if (result instanceof Result.Success) {
             setLoggedInUser(((Result.Success<LoggedInUser>) result).getData());
         }
