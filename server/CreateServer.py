@@ -121,15 +121,19 @@ def create_storage_space():
     return jsonify({'message': 'Storage space created successfully'})
 
 
-@app.route('/user_container', methods=['GET'])
+@app.route('/user_containers', methods=['GET'])
 def get_user_storage_space():
-    try:
+    '''try:
         request.get_json()
     except Exception:
         return jsonify({'error': "Wrong input type. If you don't want to add a request body, sent {} as body"})
 
     data = request.get_json()
-    user_id=data.get('user_id')
+    user_id=data.get('user_id')'''
+    user_id = request.args.get('user_id')
+
+    if user_id is None:
+        return jsonify({'error': "Missing user_id parameter."}), 400
     
     with connection.cursor() as cursor:
         sql = "SELECT storage_name FROM storage_space WHERE user_id= %s"
@@ -156,18 +160,24 @@ def storage_space_update():
 
 @app.route('/get_container', methods=['GET'])
 def get_storage_space():
-    try:
+    '''try:
         request.get_json()
     except Exception:
         return jsonify({'error': "Wrong input type. If you don't want to add a request body, sent {} as body"})
 
     data = request.get_json()
-    container_id=data.get('storage_id')
+    container_id=data.get('storage_id')'''
+    
+    storage_id = request.args.get('storage_id')
+
+    if storage_id is None:
+        return jsonify({'error': "Missing storage_id parameter."}), 400
     
     with connection.cursor() as cursor:
         sql = "SELECT storage_name FROM storage_space WHERE storage_id= %s"
-        cursor.execute(sql, container_id)
+        cursor.execute(sql, storage_id)
         connection.commit()
+        
     return jsonify(cursor.fetchall())
 
 @app.route('/delete_container', methods=['DELETE'])
@@ -242,7 +252,7 @@ def create_product():
 # Enpoint to retreive products from a specific user
 @app.route('/user_products', methods=['GET'])
 def get_products_list():
-    try:
+    '''try:
         request.get_json()
     except Exception:
         return jsonify({'error': "Wrong input type."})
@@ -251,7 +261,11 @@ def get_products_list():
     user_id = data.get('user_id')
 
     if user_id is None:
-        return jsonify({'error': "Wrong input type. Need for user_id"})
+        return jsonify({'error': "Wrong input type. Need for user_id"})'''
+    user_id = request.args.get('user_id')
+
+    if user_id is None:
+        return jsonify({'error': "Missing user_id parameter."}), 400
 
     products = []
 
@@ -271,7 +285,6 @@ def get_products_list():
                 # Tratarea cazului în care nu există nicio înregistrare găsită
                 container_name = None  # sau un alt comportament adecvat în funcție de cerințele aplicației
 
-
             product = {
                 "id": product_info_id,
                 "name": product_name,
@@ -281,7 +294,6 @@ def get_products_list():
             }
 
             products.append(product)
-
     return jsonify(products)
 
 
@@ -321,14 +333,19 @@ def update_product():
 
 @app.route('/get_product', methods=['GET'])
 def get_product_info():
-    try:
+    ''' try:
         request.get_json()
     except Exception:
         return jsonify({'error': "Wrong input type. Needed request body format: { \"user_id\":<value>}"})
 
     data = request.get_json()
     
-    product_info_id = data.get('product_id')
+    product_info_id = data.get('product_id')'''
+    
+    product_info_id = request.args.get('product_info_id')
+
+    if product_info_id is None:
+        return jsonify({'error': "Missing product_info_id parameter."}), 400
    
     with connection.cursor() as cursor:
         sql = "SELECT  product_name , energy_value , fat_value, carbohydrate_value  ,sodium  ,calcium , protein , vitamin , vitamin_type  , allergens FROM product_info WHERE product_id = %s"
