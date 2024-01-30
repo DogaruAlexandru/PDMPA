@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 from flask import Flask, jsonify, request
 import pymysql
 import ManagePassword
@@ -275,9 +275,9 @@ def create_product():
 
         productName = productFull.get('productName')
         productContainer = productFull.get('productContainer')
-        expirationDate = productFull.get('expirationDate')
+        
         quantity = productFull.get('quantity')
-        addedDate = productFull.get('addedDate')
+        
         energyValue = productFull.get('energyValue')
         fatValue = productFull.get('fatValue')
         carbohydrateValue = productFull.get('carbohydrateValue')
@@ -288,7 +288,7 @@ def create_product():
         vitaminType = productFull.get('vitaminType')
         allergens = productFull.get('allergens')
         
-        expiration_date_parts = expirationDate.split(' ')
+        '''expiration_date_parts = expirationDate.split(' ')
         month_str = expiration_date_parts[0]
         day_str = expiration_date_parts[1][:-1]  # eliminarea virgulei
         year_str = expiration_date_parts[2]
@@ -313,8 +313,10 @@ def create_product():
         added_month = months[added_month_str]
 
         added_date_formatted = f"{added_year_str}-{added_month}-{added_day_str}"
+      '''
+        expirationDate = datetime.strptime(productFull.get('expirationDate'), "%b %d, %Y %H:%M:%S").strftime('%Y-%m-%d')
+        addedDate = datetime.strptime(productFull.get('addedDate'), "%b %d, %Y %H:%M:%S").strftime('%Y-%m-%d')
 
-        
 
         with connection.cursor() as cursor:
             # Insert into product_info table
@@ -332,7 +334,7 @@ def create_product():
 
             # Insert into product table
             sql = "INSERT INTO product (user_id,container_id,product_name,expiration_date,quantity_grams,date_added, product_info_id) VALUES (%s,%s,%s,%s,%s,%s,%s)"
-            cursor.execute(sql, (userId, container_id, productName, expiration_date_formatted, quantity, added_date_formatted, product_info_id))
+            cursor.execute(sql, (userId, container_id, productName, expirationDate, quantity, addedDate, product_info_id))
             connection.commit()
 
         return jsonify({'message': 'Product created successfully'})
@@ -458,15 +460,19 @@ def get_product_info():
                 product_info = cursor.fetchone()
 
                 if product_info:
+                    
                    
+                    expiration_date_formatted = expiration_date.strftime('%b %d, %Y %H:%M:%S')
+                    date_added_formatted = date_added.strftime('%b %d, %Y %H:%M:%S')
+
                     # Construirea obiectului ProductFull
                     product_full = ProductFull(
                         productId,
                         product_name,
                         container_name,
-                        expiration_date,
+                        expiration_date_formatted,
                         quantity_grams,
-                        date_added,
+                        date_added_formatted,
                         product_info[0],
                         product_info[1],
                         product_info[2],
@@ -478,7 +484,7 @@ def get_product_info():
                         product_info[8]
                     )
 
-                    return jsonify(product_full.__dict__)
+                return jsonify(product_full.__dict__)
 
             return jsonify({'error': f"Product with ID {productId} not found."}), 404
 
