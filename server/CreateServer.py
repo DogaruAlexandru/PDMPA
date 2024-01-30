@@ -13,6 +13,10 @@ connection = pymysql.connect(
     database='android_app'
 )
 
+class Container:
+    def __init__(self, id, name):
+        self.id = id
+        self.name = name
 
 # Endpoint to create a new user
 # @app.route('/app_users', methods=['POST', 'GET'])
@@ -111,16 +115,21 @@ def create_storage_space():
     except Exception:
         return jsonify({'error': "Wrong input type. If you don't want to add a request body, sent {} as body"})
 
-    data = request.get_json()
-    userId=data.get('userId')
-    container = data.get('container')
-    name = container.get('name')
-    
-    with connection.cursor() as cursor:
-        sql = "INSERT INTO storage_space (storage_name,user_id) VALUES (%s,%s)"
-        cursor.execute(sql, (name,userId))
-        connection.commit()
-    return jsonify({'message': 'Storage space created successfully'})
+    try:
+        data = request.get_json()
+        userId=data.get('userId')
+        container = data.get('container')
+        name = container.get('name')
+        
+        
+        
+        with connection.cursor() as cursor:
+            sql = "INSERT INTO storage_space (storage_name,user_id) VALUES (%s,%s)"
+            cursor.execute(sql, (name,userId))
+            connection.commit()
+        return jsonify({'message': 'Storage space created successfully'})
+    except Exception as e:
+        return jsonify({'error': str(e)})
 
 
 @app.route('/user_containers', methods=['GET'])
@@ -128,14 +137,23 @@ def get_user_storage_space():
     
     userId = request.args.get('userId')
 
-    if userId is None:
-        return jsonify({'error': "Missing user_id parameter."}), 400
-    
-    with connection.cursor() as cursor:
-        sql = "SELECT storage_id, storage_name FROM storage_space WHERE user_id= %s"
-        cursor.execute(sql, userId)
-        connection.commit()
-    return jsonify(cursor.fetchall())
+    try:
+        with connection.cursor() as cursor:
+            sql = "SELECT storage_id, storage_name FROM storage_space WHERE user_id = %s"
+            cursor.execute(sql, (userId,))
+            storage_spaces = cursor.fetchall()
+
+        # Construct the list of Container objects
+        containers = []
+        for space in storage_spaces:
+            container = Container(id=space[0], name=space[1])
+            containers.append(container)
+
+        # Return the list of Container objects as JSON
+        return jsonify([container.__dict__ for container in containers])
+
+    except Exception as e:
+        return jsonify({'error': str(e)})
 
 @app.route('/update_container', methods=['PUT'])
 def storage_space_update():
