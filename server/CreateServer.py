@@ -9,7 +9,7 @@ app = Flask(__name__)
 connection = pymysql.connect(
     host='127.0.0.1',
     user='root',
-    password='@Nk22bdpizznthw50',
+    password='1q2w3e',
     database='android_app'
 )
 
@@ -97,7 +97,7 @@ def login():
                 # user[1] - password_hash, user[2] - salt
                 if ManagePassword.verify_password(password, user[1], user[2]):
                     # user[0] - user_id
-                    return jsonify({'user_id': user[0], 'email': username}), 201
+                    return jsonify({'userId': user[0], 'email': username}), 201
 
             return jsonify({"error": "Invalid password"}), 400
 

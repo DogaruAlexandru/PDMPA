@@ -1,5 +1,8 @@
 package com.example.client.ui.login;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -18,6 +21,7 @@ import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.client.MainActivity;
 import com.example.client.R;
 import com.example.client.databinding.FragmentLoginBinding;
 
@@ -94,6 +98,7 @@ public class LoginFragment extends Fragment {
         passwordEditText.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 loginViewModel.login(usernameEditText.getText().toString(), passwordEditText.getText().toString());
+                changeActivity();
             }
             return false;
         });
@@ -101,6 +106,7 @@ public class LoginFragment extends Fragment {
         loginButton.setOnClickListener(v -> {
             loadingProgressBar.setVisibility(View.VISIBLE);
             loginViewModel.login(usernameEditText.getText().toString(), passwordEditText.getText().toString());
+            changeActivity();
         });
 
         registerButton.setOnClickListener(v -> {
@@ -111,6 +117,19 @@ public class LoginFragment extends Fragment {
             //todo change to forgot password fragment
             //  give mail with code for password change
         });
+    }
+
+    private void changeActivity() {
+        if (getUserId() != -1) {
+            Intent intent = new Intent(requireContext(), MainActivity.class);
+            startActivity(intent);
+            requireActivity().finish();
+        }
+    }
+
+    private long getUserId() {
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("user", Context.MODE_PRIVATE);
+        return sharedPreferences.getLong("userId", -1);
     }
 
     private void updateUiWithUser(LoggedInUserView model) {
