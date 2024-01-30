@@ -37,7 +37,7 @@ public class ProduceAddViewModel extends ViewModel {
             containerNames = ContainerAPI.getContainers(userId).stream()
                     .map(Container::name)
                     .collect(Collectors.toList());
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
 

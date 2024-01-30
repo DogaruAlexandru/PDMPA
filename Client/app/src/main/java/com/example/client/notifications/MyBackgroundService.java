@@ -41,12 +41,12 @@ public class MyBackgroundService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        getFromDB();
-
         // Start the service as a foreground service
         SharedPreferences sharedPreferences = this.getSharedPreferences("user", Context.MODE_PRIVATE);
         long userId = sharedPreferences.getLong("userId", -1);
         if (userId != -1) {
+            getFromDB();
+
             startForeground(1, createNotification());
         }
 

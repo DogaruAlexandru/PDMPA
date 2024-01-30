@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.Callable;
+import java.util.concurrent.FutureTask;
 
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -29,6 +31,26 @@ public class ProductAPI {
     }
 
     public static List<Product> getProducts(long userId) throws IOException {
+        // Create a Callable to perform the network call
+        Callable<List<Product>> getProductsCallable = () -> getProductsCall(userId);
+
+        // Wrap the Callable in a FutureTask
+        FutureTask<List<Product>> futureTask = new FutureTask<>(getProductsCallable);
+
+        // Start a new thread to execute the FutureTask
+        new Thread(futureTask).start();
+
+        // Wait for the task to complete and get the result
+        try {
+            return futureTask.get();
+        } catch (Exception e) {
+            // Handle exceptions if needed
+            e.printStackTrace();
+            return null; // Or throw an exception if appropriate
+        }
+    }
+
+    private static List<Product> getProductsCall(long userId) throws IOException {
         String urlWithParams = BASE_URL + GET_PRODUCT_LIST_ENDPOINT + "?userId=" + userId;
 
         Request request = new Request.Builder()
@@ -48,6 +70,28 @@ public class ProductAPI {
     }
 
     public static void createProduct(UserIdProductFull obj) throws IOException {
+        // Create a Callable to perform the network call
+        Callable<Void> createProductCallable = () -> {
+            createProductCall(obj);
+            return null; // Callable requires a return type
+        };
+
+        // Wrap the Callable in a FutureTask
+        FutureTask<Void> futureTask = new FutureTask<>(createProductCallable);
+
+        // Start a new thread to execute the FutureTask
+        new Thread(futureTask).start();
+
+        // Wait for the task to complete
+        try {
+            futureTask.get();
+        } catch (Exception e) {
+            // Handle exceptions if needed
+            e.printStackTrace();
+        }
+    }
+
+    private static void createProductCall(UserIdProductFull obj) throws IOException {
         RequestBody requestBody = RequestBody.create(gson.toJson(obj), JSON);
 
         Request request = new Request.Builder()
@@ -63,6 +107,28 @@ public class ProductAPI {
     }
 
     public static void updateProduct(ProductFull productFull) throws IOException {
+        // Create a Callable to perform the network call
+        Callable<Void> updateProductCallable = () -> {
+            updateProductCall(productFull);
+            return null; // Callable requires a return type
+        };
+
+        // Wrap the Callable in a FutureTask
+        FutureTask<Void> futureTask = new FutureTask<>(updateProductCallable);
+
+        // Start a new thread to execute the FutureTask
+        new Thread(futureTask).start();
+
+        // Wait for the task to complete
+        try {
+            futureTask.get();
+        } catch (Exception e) {
+            // Handle exceptions if needed
+            e.printStackTrace();
+        }
+    }
+
+    private static void updateProductCall(ProductFull productFull) throws IOException {
         RequestBody requestBody = RequestBody.create(gson.toJson(productFull), JSON);
 
         Request request = new Request.Builder()
@@ -78,6 +144,26 @@ public class ProductAPI {
     }
 
     public static ProductFull getProduct(long productId) throws IOException {
+        // Create a Callable to perform the network call
+        Callable<ProductFull> getProductCallable = () -> getProductCall(productId);
+
+        // Wrap the Callable in a FutureTask
+        FutureTask<ProductFull> futureTask = new FutureTask<>(getProductCallable);
+
+        // Start a new thread to execute the FutureTask
+        new Thread(futureTask).start();
+
+        // Wait for the task to complete and get the result
+        try {
+            return futureTask.get();
+        } catch (Exception e) {
+            // Handle exceptions if needed
+            e.printStackTrace();
+            return null; // Or throw an exception if appropriate
+        }
+    }
+
+    private static ProductFull getProductCall(long productId) throws IOException {
         String urlWithParams = BASE_URL + GET_PRODUCT_ENDPOINT + "&productId=" + productId;
 
         Request request = new Request.Builder()
@@ -95,8 +181,29 @@ public class ProductAPI {
         }
     }
 
-
     public static void deleteProduct(long productId) throws IOException {
+        // Create a Callable to perform the network call
+        Callable<Void> deleteProductCallable = () -> {
+            deleteProductCall(productId);
+            return null; // Callable requires a return type
+        };
+
+        // Wrap the Callable in a FutureTask
+        FutureTask<Void> futureTask = new FutureTask<>(deleteProductCallable);
+
+        // Start a new thread to execute the FutureTask
+        new Thread(futureTask).start();
+
+        // Wait for the task to complete
+        try {
+            futureTask.get();
+        } catch (Exception e) {
+            // Handle exceptions if needed
+            e.printStackTrace();
+        }
+    }
+
+    private static void deleteProductCall(long productId) throws IOException {
         RequestBody requestBody = RequestBody.create(gson.toJson(productId), JSON);
 
         Request request = new Request.Builder()

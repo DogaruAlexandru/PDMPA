@@ -13,6 +13,7 @@ import com.example.client.data.model.LoggedInUser;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.concurrent.CountDownLatch;
 
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -27,11 +28,45 @@ public class UserLoginAPI {
     }
 
     public static LoggedInUser login(UserLogging userLogging) throws Exception {
-        return getLoggedInUser(userLogging, LOGIN_ENDPOINT);
+        return callEndpoint(userLogging, LOGIN_ENDPOINT);
     }
 
     public static LoggedInUser register(UserLogging userLogging) throws Exception {
-        return getLoggedInUser(userLogging, REGISTER_ENDPOINT);
+        return callEndpoint(userLogging, REGISTER_ENDPOINT);
+    }
+
+    public static LoggedInUser callEndpoint(final UserLogging userLogging, String endpoint) throws Exception {
+        final CountDownLatch latch = new CountDownLatch(1);
+        final LoggedInUser[] result = {null};
+        final Exception[] exception = {null};
+
+        // Start a new thread to perform the network operation
+        new Thread(() -> {
+            try {
+                result[0] = getLoggedInUser(userLogging, endpoint);
+            } catch (Exception e) {
+                exception[0] = e;
+            } finally {
+                // Signal that the operation is complete
+                latch.countDown();
+            }
+        }).start();
+
+        try {
+            // Wait for the background thread to complete
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            Thread.currentThread().interrupt();
+        }
+
+        // Check for any exception thrown during the background thread
+        if (exception[0] != null) {
+            throw exception[0];
+        }
+
+        // Return the result obtained from the background thread
+        return result[0];
     }
 
     @NonNull

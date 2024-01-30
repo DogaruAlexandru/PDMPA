@@ -8,7 +8,7 @@ app = Flask(__name__)
 connection = pymysql.connect(
     host='127.0.0.1',
     user='root',
-    password='@Nk22bdpizznthw50',
+    password='1q2w3e',
     database='android_app'
 )
 
@@ -45,7 +45,7 @@ def register():
     try:
         request.get_json()
     except Exception:
-        return jsonify({'error': "Wrong input type"})
+        return jsonify({'error': "Wrong input type"}), 400
 
     data = request.get_json()
 
@@ -57,7 +57,7 @@ def register():
             cursor.execute(sql, username)
             users = cursor.fetchall()
             if len(users) != 0:
-                return jsonify({"error": "Already existing user"})
+                return jsonify({"error": "Already existing user"}), 400
 
             password_hash, salt = ManagePassword.hash_password(password)
 
@@ -65,18 +65,11 @@ def register():
             cursor.execute(sql, (username, password_hash, salt))
             connection.commit()
 
-            '''sql_get_userinfo = "SELECT * FROM app_users WHERE username = %s and password_hash = %s and salt = %s"
-            cursor.execute(sql_get_userinfo, (username, password_hash, salt))
-            users = cursor.fetchall()
+            user_id = cursor.lastrowid  # Get the ID of the last inserted row
 
-            if len(users) > 1:
-                return jsonify({'error': 'Multiple users with same info'})
+            return jsonify({'userId': user_id, 'email': username}), 201  # Use 201 status code for successful creation
 
-            for user in users:
-                print(jsonify(user))
-                return jsonify({'user_id': user["user_id"], 'message': 'User created successfully'})'''
 
-        return jsonify({'message': 'User created successfully'})
 
 
 # Endpoint to log in with user
@@ -85,7 +78,7 @@ def login():
     try:
         request.get_json()
     except Exception:
-        return jsonify({'error': "Wrong input type"})
+        return jsonify({'error': "Wrong input type"}), 400
 
     data = request.get_json()
     username = data.get('username')
@@ -97,15 +90,15 @@ def login():
             users = cursor.fetchall()
             print(users)
             if len(users) == 0:
-                return jsonify({"error": "User not found"})
+                return jsonify({"error": "User not found"}), 400
 
             for user in users:
                 # user[1] - password_hash, user[2] - salt
                 if ManagePassword.verify_password(password, user[1], user[2]):
                     # user[0] - user_id
-                    return jsonify({'user_id': user[0], 'message': 'User logged successfully'})
+                    return jsonify({'user_id': user[0], 'email': username}), 201
 
-            return jsonify({"error": "Invalid password"})
+            return jsonify({"error": "Invalid password"}), 400
 
 # Endpoint for storage space management
 

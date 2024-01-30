@@ -12,6 +12,9 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
 
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -27,7 +30,27 @@ public class ContainerAPI {
     public record UserIdContainer(long userId, Container container) {
     }
 
-    public static List<Container> getContainers(long userId) throws IOException {
+    public static List<Container> getContainers(long userId) throws IOException, ExecutionException, InterruptedException {
+        // Create a Callable to perform the network call
+        Callable<List<Container>> getContainersCallable = () -> getContainersCall(userId);
+
+        // Wrap the Callable in a FutureTask
+        FutureTask<List<Container>> futureTask = new FutureTask<>(getContainersCallable);
+
+        // Start a new thread to execute the FutureTask
+        new Thread(futureTask).start();
+
+        // Wait for the task to complete and get the result
+        try {
+            return futureTask.get();
+        } catch (Exception e) {
+            // Handle exceptions if needed
+            e.printStackTrace();
+            return null; // Or throw an exception if appropriate
+        }
+    }
+
+    private static List<Container> getContainersCall(long userId) throws IOException {
         String urlWithParams = BASE_URL + GET_CONTAINER_LIST_ENDPOINT + "?userId=" + userId;
 
         Request request = new Request.Builder()
@@ -47,6 +70,28 @@ public class ContainerAPI {
     }
 
     public static void createContainer(UserIdContainer obj) throws IOException {
+        // Create a Callable to perform the network call
+        Callable<Void> createContainerCallable = () -> {
+            createContainerCall(obj);
+            return null; // Callable requires a return type
+        };
+
+        // Wrap the Callable in a FutureTask
+        FutureTask<Void> futureTask = new FutureTask<>(createContainerCallable);
+
+        // Start a new thread to execute the FutureTask
+        new Thread(futureTask).start();
+
+        // Wait for the task to complete
+        try {
+            futureTask.get();
+        } catch (Exception e) {
+            // Handle exceptions if needed
+            e.printStackTrace();
+        }
+    }
+
+    private static void createContainerCall(UserIdContainer obj) throws IOException {
         RequestBody requestBody = RequestBody.create(gson.toJson(obj), JSON);
 
         Request request = new Request.Builder()
@@ -62,6 +107,28 @@ public class ContainerAPI {
     }
 
     public static void updateContainer(Container container) throws IOException {
+        // Create a Callable to perform the network call
+        Callable<Void> updateContainerCallable = () -> {
+            updateContainerCall(container);
+            return null; // Callable requires a return type
+        };
+
+        // Wrap the Callable in a FutureTask
+        FutureTask<Void> futureTask = new FutureTask<>(updateContainerCallable);
+
+        // Start a new thread to execute the FutureTask
+        new Thread(futureTask).start();
+
+        // Wait for the task to complete
+        try {
+            futureTask.get();
+        } catch (Exception e) {
+            // Handle exceptions if needed
+            e.printStackTrace();
+        }
+    }
+
+    private static void updateContainerCall(Container container) throws IOException {
         RequestBody requestBody = RequestBody.create(gson.toJson(container), JSON);
 
         Request request = new Request.Builder()
@@ -77,6 +144,26 @@ public class ContainerAPI {
     }
 
     public static Container getContainer(long containerId) throws IOException {
+        // Create a Callable to perform the network call
+        Callable<Container> getContainerCallable = () -> getContainerCall(containerId);
+
+        // Wrap the Callable in a FutureTask
+        FutureTask<Container> futureTask = new FutureTask<>(getContainerCallable);
+
+        // Start a new thread to execute the FutureTask
+        new Thread(futureTask).start();
+
+        // Wait for the task to complete
+        try {
+            return futureTask.get();
+        } catch (Exception e) {
+            // Handle exceptions if needed
+            e.printStackTrace();
+            return null; // Or throw an exception if appropriate
+        }
+    }
+
+    private static Container getContainerCall(long containerId) throws IOException {
         String urlWithParams = BASE_URL + GET_CONTAINER_ENDPOINT + "&containerId=" + containerId;
 
         Request request = new Request.Builder()
@@ -94,8 +181,29 @@ public class ContainerAPI {
         }
     }
 
-
     public static void deleteContainer(long containerId) throws IOException {
+        // Create a Callable to perform the network call
+        Callable<Void> deleteContainerCallable = () -> {
+            deleteContainerCall(containerId);
+            return null; // Callable requires a return type
+        };
+
+        // Wrap the Callable in a FutureTask
+        FutureTask<Void> futureTask = new FutureTask<>(deleteContainerCallable);
+
+        // Start a new thread to execute the FutureTask
+        new Thread(futureTask).start();
+
+        // Wait for the task to complete
+        try {
+            futureTask.get();
+        } catch (Exception e) {
+            // Handle exceptions if needed
+            e.printStackTrace();
+        }
+    }
+
+    private static void deleteContainerCall(long containerId) throws IOException {
         RequestBody requestBody = RequestBody.create(gson.toJson(containerId), JSON);
 
         Request request = new Request.Builder()

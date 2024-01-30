@@ -32,7 +32,7 @@ public class ContainersViewModel extends ViewModel {
     private void getFromDB() {
         try {
             data = ContainerAPI.getContainers(userId);
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
 //        data = new ArrayList<>(Arrays.asList(
