@@ -204,11 +204,11 @@ public class ContainerAPI {
     }
 
     private static void deleteContainerCall(long containerId) throws IOException {
-        RequestBody requestBody = RequestBody.create(gson.toJson(containerId), JSON);
+        String urlWithParams = BASE_URL + DELETE_CONTAINER_ENDPOINT + "?containerId=" + containerId;
 
         Request request = new Request.Builder()
-                .url(BASE_URL + DELETE_CONTAINER_ENDPOINT)
-                .delete(requestBody)
+                .url(urlWithParams)
+                .delete()
                 .build();
 
         try (Response response = CLIENT.newCall(request).execute()) {

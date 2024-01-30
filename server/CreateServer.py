@@ -9,7 +9,6 @@ app = Flask(__name__)
 connection = pymysql.connect(
     host='127.0.0.1',
     user='root',
-    password='@Nk22bdpizznthw50',
     database='android_app'
 )
 
