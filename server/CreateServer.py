@@ -9,7 +9,7 @@ app = Flask(__name__)
 connection = pymysql.connect(
     host='127.0.0.1',
     user='root',
-    password='1q2w3e',
+    password='@Nk22bdpizznthw50',
     database='android_app'
 )
 
@@ -164,6 +164,7 @@ def storage_space_update():
 
     try:
         data = request.get_json()
+        
         id = data.get('id')
         name = data.get('name')
         
@@ -206,11 +207,12 @@ def get_storage_space():
 
 @app.route('/delete_container', methods=['DELETE'])
 def delete_storage_space():
-    try:
-        request.get_json()
-    except Exception:
-        return jsonify({'error': "Wrong input type. If you don't want to add a request body, sent {} as body"})
+   
 
+    containerId = request.args.get('containerId') 
+    
+    if containerId is None:
+        return jsonify({'error': "Missing storage_id parameter."}), 400
     try:
         data = request.get_json()
         containerId=data.get('containerId')
