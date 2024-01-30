@@ -164,7 +164,7 @@ public class ContainerAPI {
     }
 
     private static Container getContainerCall(long containerId) throws IOException {
-        String urlWithParams = BASE_URL + GET_CONTAINER_ENDPOINT + "&containerId=" + containerId;
+        String urlWithParams = BASE_URL + GET_CONTAINER_ENDPOINT + "?containerId=" + containerId;
 
         Request request = new Request.Builder()
                 .url(urlWithParams)

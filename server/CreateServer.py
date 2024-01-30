@@ -9,7 +9,7 @@ app = Flask(__name__)
 connection = pymysql.connect(
     host='127.0.0.1',
     user='root',
-    password='@Nk22bdpizznthw50',
+    password='1q2w3e',
     database='android_app'
 )
 
@@ -164,9 +164,8 @@ def storage_space_update():
 
     try:
         data = request.get_json()
-        container = data.get('container')
-        id = container.get('id')
-        name = container.get('name')
+        id = data.get('id')
+        name = data.get('name')
         
         with connection.cursor() as cursor:
             sql = "UPDATE storage_space SET storage_name=%s WHERE storage_id = %s"
