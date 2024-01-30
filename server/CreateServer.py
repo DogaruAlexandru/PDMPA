@@ -386,9 +386,9 @@ def update_product():
     productId=data.get('productId')
     productContainer = data.get('productContainer')
     productName = data.get('productName')
-    expirationDate = data.get('expirationDate')
+    
     quantity = data.get('quantity')
-    addedDate = data.get('addedDate')
+   
 
     energyValue = data.get('energyValue')
     fatValue = data.get('fatValue')
@@ -399,9 +399,11 @@ def update_product():
     vitamin=data.get('vitamin')
     vitaminType = data.get('vitaminType')
     allergens = data.get('allergens')
+    
 
-    vitaminType_str = json.dumps(vitaminType) if vitaminType else None
-    allergens_str = json.dumps(allergens) if allergens else None
+    expirationDate = datetime.strptime(data.get('expirationDate'), "%b %d, %Y %H:%M:%S").strftime('%Y-%m-%d')
+    addedDate = datetime.strptime(data.get('addedDate'), "%b %d, %Y %H:%M:%S").strftime('%Y-%m-%d')
+   
 
     with connection.cursor() as cursor:
         sql = "SELECT storage_id FROM storage_space WHERE storage_name= %s"
@@ -424,7 +426,7 @@ def update_product():
         
         
         sql_product_info = "UPDATE product_info SET  energy_value = %s, fat_value = %s, carbohydrate_value = %s ,sodium =%s ,calcium=%s , protein =%s, vitamin=%s , vitamin_type = %s , allergens =%s WHERE product_id = %s"
-        cursor.execute(sql_product_info, (energyValue,fatValue,carbohydrateValue,sodium,calcium,protein,vitamin,vitaminType_str,allergens_str,product_info_id))
+        cursor.execute(sql_product_info, (energyValue,fatValue,carbohydrateValue,sodium,calcium,protein,vitamin,vitaminType,allergens,product_info_id))
         connection.commit()
         
         return jsonify({'message': 'Product updated successfully'})
